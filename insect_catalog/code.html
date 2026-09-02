@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EntomoData Pro | Insect Research Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Source+Sans+3:wght@400;500;600&amp;family=Source+Serif+4:ital,wght@0,600;0,700;1,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: #f7f9fb;
+            color: #191c1e;
+        }
+        .glass-header {
+            backdrop-filter: blur(8px);
+            background-color: rgba(247, 249, 251, 0.8);
+        }
+        .academic-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+        }
+        .academic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 4px 4px 0px 0px rgba(30, 41, 59, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#545f73",
+                      "surface-container-low": "#f2f4f6",
+                      "tertiary-container": "#af5f36",
+                      "error": "#ba1a1a",
+                      "outline": "#6d7a72",
+                      "secondary-container": "#d5e0f8",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-container": "#f5fff7",
+                      "on-tertiary-fixed-variant": "#76330d",
+                      "on-tertiary-container": "#fffbff",
+                      "secondary-fixed-dim": "#bcc7de",
+                      "on-secondary-fixed": "#111c2d",
+                      "on-surface": "#191c1e",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#d8dadc",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-error-container": "#93000a",
+                      "on-background": "#191c1e",
+                      "on-tertiary-fixed": "#351000",
+                      "on-secondary-fixed-variant": "#3c475a",
+                      "background": "#f7f9fb",
+                      "tertiary": "#904821",
+                      "primary": "#006948",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#85f8c4",
+                      "on-primary-fixed": "#002114",
+                      "secondary-fixed": "#d8e3fb",
+                      "on-secondary-container": "#586377",
+                      "inverse-primary": "#68dba9",
+                      "on-error": "#ffffff",
+                      "surface-variant": "#e0e3e5",
+                      "on-secondary": "#ffffff",
+                      "surface": "#f7f9fb",
+                      "surface-container": "#eceef0",
+                      "primary-fixed-dim": "#68dba9",
+                      "primary-container": "#00855d",
+                      "outline-variant": "#bccac0",
+                      "inverse-surface": "#2d3133",
+                      "surface-container-high": "#e6e8ea",
+                      "tertiary-fixed-dim": "#ffb693",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#3d4a42",
+                      "on-primary-fixed-variant": "#005137",
+                      "surface-bright": "#f7f9fb",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#ffdbcc",
+                      "surface-tint": "#006c4a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "container-max": "1440px",
+                      "gutter": "20px",
+                      "md": "16px",
+                      "xl": "48px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-sm": ["\"Source Serif 4\""],
+                      "headline-md": ["\"Source Serif 4\""],
+                      "body-md": ["\"Source Sans 3\""],
+                      "scientific-name": ["\"Source Serif 4\""],
+                      "data-mono": ["JetBrains Mono"],
+                      "display-lg": ["\"Source Serif 4\""],
+                      "body-lg": ["\"Source Sans 3\""],
+                      "body-sm": ["\"Source Sans 3\""]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "scientific-name": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "data-mono": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex items-center justify-between px-lg max-w-full mx-auto h-16 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline glass-header">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim">EntomoData Pro</span>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Catalog</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Categories</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Admin</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Research</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-base rounded-lg transition-colors">notifications</button>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-base rounded-lg transition-colors">settings</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female research scientist wearing a lab coat and glasses, set against a blurred background of a modern botanical laboratory. The lighting is soft and natural, emphasizing a professional and academic atmosphere consistent with high-end scientific software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_jeJV-UjiYNJd8TxPrHC7bu3E5ilbp2zYmqUJfUjawGNkQX4bLrZmcawJ4YgmT9mzC6hNeclpqGcPxlgN405BiEWIGd4VcbcRCh0Tt3NREArmu7GnRcKw6QASCZ-rt2IXMMMspmqxt_M_Ehez_Dof8KYzjJP5QdO04Nv03L6_x_LM8Movn39jqfaoVI2Z-tYiEHgA-aCMyPFsJ34Oj8CCddD7dLfekKg1XM19O57SYA9xgpj2JQwv"/>
+</div>
+<button class="px-md py-xs bg-primary text-on-primary font-label-caps text-label-caps rounded-lg hover:opacity-90 transition-opacity">Login</button>
+</div>
+</nav>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] fixed left-0 top-16 p-md w-64 bg-surface-container-lowest dark:bg-surface-container border-r border-outline-variant dark:border-outline">
+<div class="mb-xl flex items-center gap-sm px-sm">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">bug_report</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed leading-none">Entomology</h2>
+<p class="text-[10px] uppercase tracking-widest text-secondary mt-1">Research Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-base">
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-label-caps text-label-caps transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+                    Catalog
+                </a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim font-label-caps text-label-caps hover:bg-surface-container-high transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+                    Taxonomy
+                </a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim font-label-caps text-label-caps hover:bg-surface-container-high transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Archives
+                </a>
+<a class="flex items-center gap-md px-md py-sm text-secondary dark:text-secondary-fixed-dim font-label-caps text-label-caps hover:bg-surface-container-high transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+                    Management
+                </a>
+</nav>
+<div class="pt-xl border-t border-outline-variant mt-xl space-y-base">
+<button class="w-full flex items-center gap-md px-md py-sm text-secondary font-label-caps text-label-caps hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </button>
+<button class="w-full flex items-center gap-md px-md py-sm text-secondary font-label-caps text-label-caps hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">help</span>
+                    Support
+                </button>
+<div class="mt-md p-md bg-surface-container rounded-lg">
+<p class="text-[11px] font-label-caps mb-sm text-on-surface">Data Tools</p>
+<button class="w-full py-xs bg-primary text-on-primary text-label-caps rounded-lg flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+                        Export Data
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-lg md:p-xl max-w-container-max mx-auto w-full">
+<!-- Header Section -->
+<header class="mb-xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-sm">Biological Research Catalog</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-3xl">
+                    A comprehensive academic archive of Thai entomological specimens. This database provides systematic classification, environmental data, and conservation statuses for research and educational purposes.
+                </p>
+</header>
+<!-- Search Section -->
+<section class="mb-xl">
+<div class="relative group max-w-4xl">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="w-full pl-xl pr-md py-md bg-white border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-outline-variant shadow-sm" placeholder="Search by Common Name or Scientific Name (e.g. Dynastes hercules)..." type="text"/>
+</div>
+</section>
+<!-- Category Filter -->
+<section class="mb-xl">
+<h3 class="font-label-caps text-label-caps text-secondary mb-md">Taxonomic Orders</h3>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-xs bg-primary text-on-primary rounded-full font-label-caps text-label-caps flex items-center gap-xs transition-opacity hover:opacity-90">
+                        All Records
+                    </button>
+<button class="px-md py-xs bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-caps text-label-caps hover:bg-primary/10 transition-colors">
+                        Coleoptera (ด้วง)
+                    </button>
+<button class="px-md py-xs bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-caps text-label-caps hover:bg-primary/10 transition-colors">
+                        Lepidoptera (ผีเสื้อและมอธ)
+                    </button>
+<button class="px-md py-xs bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-caps text-label-caps hover:bg-primary/10 transition-colors">
+                        Odonata (แมลงปอ)
+                    </button>
+<button class="px-md py-xs bg-surface-container-high text-on-surface-variant border border-outline-variant rounded-full font-label-caps text-label-caps hover:bg-primary/10 transition-colors">
+                        Hymenoptera (ผึ้ง/มด)
+                    </button>
+</div>
+</section>
+<!-- Results Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-lg">
+<!-- Card 1 -->
+<article class="academic-card bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="h-48 relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A macroscopic high-detail photograph of a Hercules Beetle (Dynastes hercules) resting on a mossy tropical log. Soft morning jungle light filters through canopy leaves, highlighting the iridescent yellow-black wing cases and impressive horn. High-end scientific macro photography style with shallow depth of field, emerald and earth tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuR5wcuOdMealxSUmneAXE6zVBXoXaX5vjc3S2OrFcgVVCOYs26ulhz8gWcwxdzwaAy_8tzjXVdKQq-2ZSXWJ9UGNdHqPj3ukwPKJ0qFjAPpeKjodP9kpPsBH0plh-NLNB9gMFm8i_qkv-kNu7-ECgVdxEELV9H1XyHNLRd7g4l5sI5-TdP0Js4nYTNVHwfiv_KtLmY-cLQMEdHyRtiNM1vBBRg2_OD5N0iwUPzyos0RnI4Z1hV1xr"/>
+<span class="absolute top-sm right-sm bg-primary/90 text-on-primary px-sm py-xs rounded font-label-caps text-[10px]">COLEOPTERA</span>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h4 class="font-body-md font-bold text-on-surface">ด้วงกว่างเฮอร์คิวลิส</h4>
+<p class="font-scientific-name italic text-secondary text-sm mb-sm">Dynastes hercules</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            One of the most famous and largest of the rhinoceros beetles, known for its incredible strength.
+                        </p>
+<div class="mt-auto border-t border-outline-variant pt-sm flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-outline">location_on</span>
+<span class="text-[11px] font-label-caps text-secondary">Tropical Rain</span>
+</div>
+<span class="px-xs py-[2px] bg-amber-100 text-amber-800 rounded font-label-caps text-[10px] uppercase">Vulnerable</span>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="academic-card bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="h-48 relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A studio-lit entomology specimen photograph of a Giraffe Stag Beetle (Prosopocoilus giraffa). The beetle is displayed on a neutral parchment background, emphasizing its elongated black mandibles and segmented exoskeleton. Clean, scholarly aesthetic with crisp details and professional lighting, using a slate and deep charcoal palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUYwjhVN3UNJLXJph8UZ1q9SaDM7G6ETDi7boiq7Ml6bPr5iuuOqo-L5zWACu02YF_wA6LRZNXWQF3MOLzjMiPNbneb-89tZdQDymExtbJ7Qzzp1SKGxSXYlRndWxcSBgzzstCHfVSJ-Ev5roh-36ZC2_i397XBxK8qscxNTWSaMuk79sbNv8aurGUC-H-8C7yjPl25TCHgvWvCQ-2LQlPISWy6nC3TJHHG89RHw-vWGpIGAywshaM"/>
+<span class="absolute top-sm right-sm bg-primary/90 text-on-primary px-sm py-xs rounded font-label-caps text-[10px]">COLEOPTERA</span>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h4 class="font-body-md font-bold text-on-surface">ด้วงคีมยีราฟ</h4>
+<p class="font-scientific-name italic text-secondary text-sm mb-sm">Prosopocoilus giraffa</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            Named for its exceptionally long mandibles, which can be as long as the rest of its body.
+                        </p>
+<div class="mt-auto border-t border-outline-variant pt-sm flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-outline">location_on</span>
+<span class="text-[11px] font-label-caps text-secondary">Broadleaf Forest</span>
+</div>
+<span class="px-xs py-[2px] bg-green-100 text-green-800 rounded font-label-caps text-[10px] uppercase">Common</span>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="academic-card bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="h-48 relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A vivid photograph of a Common Bluebottle butterfly (Graphium sarpedon) with wings spread, resting on a bright tropical flower. The striking turquoise bands across its black wings are illuminated by clear sunlight. Vibrant ecological photography with a lush green bokeh background, emphasizing biodiversity and natural beauty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyg9tumTYF6OJj_AWyHv9tonFS_VaDuBeD6HN53giXlecRg8xdFTZUxW2RKGJL-wkZ22WhxH5RFy7GFYRTSWT0yw0MaeI6iE4Pjzcpq7eGSHPahahbSsBRYZqexijLfyXd24qBKlyhsq4utFt28JRO0d7l9Zsr8ytpttybUZ7gcpyzSk2DrjMPhCkfpDkgShHmZ28ZDAO-_XfU0FPO-Z41Ah0pM3ivOaiuC-VLw7_vOBijyTW5D5hu"/>
+<span class="absolute top-sm right-sm bg-tertiary text-on-tertiary px-sm py-xs rounded font-label-caps text-[10px]">LEPIDOPTERA</span>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h4 class="font-body-md font-bold text-on-surface">ผีเสื้อหางติ่งสะพานฟ้า</h4>
+<p class="font-scientific-name italic text-secondary text-sm mb-sm">Graphium sarpedon</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            A swallowtail butterfly characterized by bright blue bands on black wings. Often found near water.
+                        </p>
+<div class="mt-auto border-t border-outline-variant pt-sm flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-outline">location_on</span>
+<span class="text-[11px] font-label-caps text-secondary">Riverine</span>
+</div>
+<span class="px-xs py-[2px] bg-green-100 text-green-800 rounded font-label-caps text-[10px] uppercase">Common</span>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="academic-card bg-white border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="h-48 relative overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A detailed macro shot of a Common Bluetail damselfly (Ischnura senegalensis) perched on a thin aquatic reed. The metallic blue and green hues of its slender abdomen are reflected in the calm water surface below. Soft, morning marsh lighting, highlighting the delicate transparency of the wings and the intricate anatomy of the insect." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4K_aF7tVVrcO928SOaEQ4OTYMh0BO9Au2PjOhl-r3qh1ndWV02oD2huW9RT1Gi3_h9YgZwYb6TfQZnOZIw9E3ufbKl6ry20VwEDn7HpSEB7eKQRsDyxrNIHrnwe_iPw6BuER8J7zsiJiH-OAeTTMKvLAmmm0QxAsd5nwl7f9OQSqvvzqeMaOT1R5A1lISraZzFRg7JKVky9lCNFiBfsPi4WbS8F_MMLsbcwopPsAXtd3TJmBjaU-u"/>
+<span class="absolute top-sm right-sm bg-secondary text-on-secondary px-sm py-xs rounded font-label-caps text-[10px]">ODONATA</span>
+</div>
+<div class="p-md flex-1 flex flex-col">
+<h4 class="font-body-md font-bold text-on-surface">แมลงปอเข็มท้องยาว</h4>
+<p class="font-scientific-name italic text-secondary text-sm mb-sm">Ischnura senegalensis</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md">
+                            A widespread damselfly known for its blue tail and adaptability to various water types.
+                        </p>
+<div class="mt-auto border-t border-outline-variant pt-sm flex items-center justify-between">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-outline">location_on</span>
+<span class="text-[11px] font-label-caps text-secondary">Wetlands</span>
+</div>
+<span class="px-xs py-[2px] bg-green-100 text-green-800 rounded font-label-caps text-[10px] uppercase">Common</span>
+</div>
+</div>
+</article>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg mt-auto bg-surface-container dark:bg-surface-container-highest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-lg">
+<div class="max-w-xl">
+<span class="font-label-caps text-label-caps text-primary mb-sm block">ENTOMODATA PRO</span>
+<p class="font-body-sm text-body-sm text-secondary dark:text-on-secondary-fixed-variant">
+                    © 2024 International Entomological Society. All scientific data preserved under Open-Access Licenses. 
+                    Support sustainable biodiversity through documented research.
+                </p>
+</div>
+<div class="flex flex-wrap gap-md">
+<a class="text-secondary-container dark:text-secondary-fixed font-body-sm text-body-sm hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Privacy Policy</a>
+<a class="text-secondary-container dark:text-secondary-fixed font-body-sm text-body-sm hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Terms of Service</a>
+<a class="text-secondary-container dark:text-secondary-fixed font-body-sm text-body-sm hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Curation Guidelines</a>
+<a class="text-secondary-container dark:text-secondary-fixed font-body-sm text-body-sm hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">API Documentation</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple search interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.academic-card');
+            
+            cards.forEach(card => {
+                const commonName = card.querySelector('h4').textContent.toLowerCase();
+                const scientificName = card.querySelector('.font-scientific-name').textContent.toLowerCase();
+                
+                if (commonName.includes(term) || scientificName.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Add small hover interaction to cards
+        document.querySelectorAll('.academic-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('img').style.transform = 'scale(1.05)';
+                card.querySelector('img').style.transition = 'transform 0.4s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.querySelector('img').style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

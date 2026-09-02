@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  insect-mysql:
+    image: mysql:8.0
+    container_name: insect_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: insect_db
+      MYSQL_USER: insect_user
+      MYSQL_PASSWORD: insect_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_insect_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - insect-network
+
+volumes:
+  mysql_insect_data:
+
+networks:
+  insect-network:
+    driver: bridge

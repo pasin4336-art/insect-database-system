@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Insect Details | EntomoData Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&amp;family=Source+Sans+3:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#545f73",
+                    "surface-container-low": "#f2f4f6",
+                    "tertiary-container": "#af5f36",
+                    "error": "#ba1a1a",
+                    "outline": "#6d7a72",
+                    "secondary-container": "#d5e0f8",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-primary-container": "#f5fff7",
+                    "on-tertiary-fixed-variant": "#76330d",
+                    "on-tertiary-container": "#fffbff",
+                    "secondary-fixed-dim": "#bcc7de",
+                    "on-secondary-fixed": "#111c2d",
+                    "on-surface": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#d8dadc",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-error-container": "#93000a",
+                    "on-background": "#191c1e",
+                    "on-tertiary-fixed": "#351000",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "background": "#f7f9fb",
+                    "tertiary": "#904821",
+                    "primary": "#006948",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#85f8c4",
+                    "on-primary-fixed": "#002114",
+                    "secondary-fixed": "#d8e3fb",
+                    "on-secondary-container": "#586377",
+                    "inverse-primary": "#68dba9",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "surface-container": "#eceef0",
+                    "primary-fixed-dim": "#68dba9",
+                    "primary-container": "#00855d",
+                    "outline-variant": "#bccac0",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-fixed-dim": "#ffb693",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3d4a42",
+                    "on-primary-fixed-variant": "#005137",
+                    "surface-bright": "#f7f9fb",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-tint": "#006c4a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "container-max": "1440px",
+                    "gutter": "20px",
+                    "md": "16px",
+                    "xl": "48px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-sm": ["\"Source Serif 4\""],
+                    "headline-md": ["\"Source Serif 4\""],
+                    "body-md": ["\"Source Sans 3\""],
+                    "scientific-name": ["\"Source Serif 4\""],
+                    "data-mono": ["JetBrains Mono"],
+                    "display-lg": ["\"Source Serif 4\""],
+                    "body-lg": ["\"Source Sans 3\""],
+                    "body-sm": ["\"Source Sans 3\""]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                    "headline-md": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "scientific-name": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                    "data-mono": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                    "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                    "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f7f9fb;
+            color: #191c1e;
+        }
+        /* Custom Scholarly Shadow */
+        .shadow-scholarly {
+            box-shadow: 4px 4px 0px 0px rgba(30, 41, 59, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #eceef0;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #6d7a72;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-lg max-w-container-max mx-auto bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline h-16">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim tracking-tight">EntomoData Pro</span>
+<nav class="hidden md:flex gap-md items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Catalog</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Categories</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Admin</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-body-md text-body-md hover:bg-surface-container-low transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Research</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex items-center bg-surface-container-low px-sm py-1 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search specimens..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full cursor-pointer transition-all">notifications</span>
+<span class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full cursor-pointer transition-all">settings</span>
+<button class="bg-primary text-on-primary px-md py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-all">Login</button>
+</div>
+</header>
+<div class="flex pt-16 min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-64px)] fixed left-0 top-16 p-md w-64 bg-surface-container-lowest dark:bg-surface-container border-r border-outline-variant dark:border-outline">
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">bug_report</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed">Entomology Database</div>
+<div class="text-[10px] uppercase tracking-widest text-secondary">Academic Research Portal</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md bg-primary-container text-on-primary-container rounded-lg transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps">Catalog</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-caps text-label-caps">Taxonomy</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">Archives</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">Management</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<button class="mt-md bg-primary text-on-primary py-3 rounded-lg font-label-caps text-label-caps flex items-center justify-center gap-sm shadow-scholarly">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export Data
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 lg:ml-64 p-lg md:p-xl max-w-5xl">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-xs mb-lg text-secondary font-label-caps text-label-caps">
+<a class="hover:text-primary" href="#">Catalog</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary" href="#">Coleoptera</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface">ด้วงกว่างเฮอร์คิวลิส</span>
+</nav>
+<!-- Hero Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-xl mb-xl">
+<div class="md:col-span-5">
+<div class="relative group aspect-square overflow-hidden rounded-lg border border-outline-variant bg-white">
+<img class="w-full h-full object-contain p-lg transition-transform duration-500 group-hover:scale-110" data-alt="A high-definition macro photograph of a Dynastes hercules beetle, showing its magnificent dark obsidian exoskeleton and massive thoracic horn. The specimen is posed against a clean, neutral architectural grey background with professional studio lighting that highlights the intricate textures of its chitin. The aesthetic is clean, scientific, and prestigious, utilizing a palette of deep forest greens and sharp silvers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl_7C0UquxUek4axq2GcOBl_qqoIxY8nNP7I99bnqg_GIxL7dDWj-zgPTNXwNV3CsJGuMQ9px9M2DnNxjl7aX4p4IpDQEVN5mAlwZNtSejjman4VLTKACySDJyIok-t8u7M_4q03vXyOOKdsrXmY0p77JSF99hjHbH20Rq-xjr5sfkeK5WGUGCrwr29_bEQ-KKiHMmVEmHxkH0XN97nNxR_uJUGMiqiqHHETm8BzWKvZRfZ7GMdr5H"/>
+<div class="absolute bottom-4 right-4 flex gap-base">
+<button class="p-base bg-white/80 backdrop-blur rounded border border-outline-variant hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">zoom_in</span>
+</button>
+<button class="p-base bg-white/80 backdrop-blur rounded border border-outline-variant hover:bg-white transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+</button>
+</div>
+</div>
+</div>
+<div class="md:col-span-7 flex flex-col justify-center">
+<div class="flex items-start justify-between mb-sm">
+<div class="bg-primary-container text-on-primary-container px-md py-1 rounded-sm font-label-caps text-label-caps">
+                            Specimen #DH-2024-001
+                        </div>
+<div class="flex gap-sm">
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="text-secondary hover:text-error transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface leading-tight mb-base">ด้วงกว่างเฮอร์คิวลิส</h1>
+<p class="font-scientific-name text-scientific-name text-secondary italic mb-md">Dynastes hercules</p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<span class="flex items-center gap-xs bg-surface-container-high px-sm py-1 rounded-sm border border-outline-variant font-label-caps text-label-caps text-secondary">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                            Least Concern
+                        </span>
+<span class="flex items-center gap-xs bg-surface-container-high px-sm py-1 rounded-sm border border-outline-variant font-label-caps text-label-caps text-secondary">
+<span class="material-symbols-outlined text-[14px]">category</span>
+                            Dynastinae
+                        </span>
+<span class="flex items-center gap-xs bg-surface-container-high px-sm py-1 rounded-sm border border-outline-variant font-label-caps text-label-caps text-secondary">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                            Central/South America
+                        </span>
+</div>
+<div class="flex gap-md">
+<button class="bg-primary text-on-primary px-xl py-3 rounded hover:opacity-90 transition-all font-label-caps text-label-caps flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                            Edit Record
+                        </button>
+<button class="border border-secondary text-secondary px-xl py-3 rounded hover:bg-surface-container-low transition-all font-label-caps text-label-caps flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                            Export PDF
+                        </button>
+</div>
+</div>
+</section>
+<!-- Content Tabs -->
+<section class="border-t border-outline-variant pt-xl">
+<div class="flex gap-xl border-b border-outline-variant mb-lg overflow-x-auto no-scrollbar">
+<button class="pb-md border-b-2 border-primary text-primary font-label-caps text-label-caps whitespace-nowrap">Overview</button>
+<button class="pb-md border-b-2 border-transparent text-secondary hover:text-on-surface font-label-caps text-label-caps transition-all whitespace-nowrap">Biological Taxonomy</button>
+<button class="pb-md border-b-2 border-transparent text-secondary hover:text-on-surface font-label-caps text-label-caps transition-all whitespace-nowrap">Habitat &amp; Ecology</button>
+<button class="pb-md border-b-2 border-transparent text-secondary hover:text-on-surface font-label-caps text-label-caps transition-all whitespace-nowrap">Genomic Data</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Left: Overview & Description -->
+<div class="lg:col-span-2 space-y-lg">
+<div>
+<h3 class="font-headline-sm text-headline-sm mb-md text-on-surface">Species Description</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-md">
+                                The Hercules beetle (Dynastes hercules) is the most famous and largest of the rhinoceros beetles. Native to the rainforests of Central America, South America, and the Lesser Antilles, it is remarkably large, with some males reaching up to 17.5 cm (about 7 inches) in length including their horns.
+                            </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                Their most striking feature is the pair of large horns found on the males. One horn projects forward from the thorax, and a second horn projects forward from the head. These horns can grow longer than the beetle's actual body. They are used in combat with other males to establish dominance and secure mating rights with females.
+                            </p>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-lg border border-outline-variant shadow-scholarly">
+<h4 class="font-label-caps text-label-caps text-secondary mb-md">Physical Characteristics</h4>
+<div class="grid grid-cols-2 gap-md">
+<div>
+<span class="text-secondary font-body-sm block">Avg. Male Length</span>
+<span class="font-data-mono text-data-mono">120 - 175 mm</span>
+</div>
+<div>
+<span class="text-secondary font-body-sm block">Body Color</span>
+<span class="font-data-mono text-data-mono">Black / Grey-Blue Chitin</span>
+</div>
+<div>
+<span class="text-secondary font-body-sm block">Max Life Span</span>
+<span class="font-data-mono text-data-mono">1.5 - 2 Years</span>
+</div>
+<div>
+<span class="text-secondary font-body-sm block">Wing Type</span>
+<span class="font-data-mono text-data-mono">Elytra</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Taxonomy & Metadata -->
+<div class="space-y-lg">
+<div class="bg-white border border-outline-variant overflow-hidden">
+<div class="bg-secondary px-md py-2">
+<span class="font-label-caps text-label-caps text-white">Biological Taxonomy</span>
+</div>
+<table class="w-full text-left font-body-sm">
+<tbody class="divide-y divide-outline-variant">
+<tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">KINGDOM</td>
+<td class="p-md font-medium">Animalia</td>
+</tr>
+<tr class="bg-white hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">PHYLUM</td>
+<td class="p-md font-medium">Arthropoda</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">CLASS</td>
+<td class="p-md font-medium">Insecta</td>
+</tr>
+<tr class="bg-white hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">ORDER</td>
+<td class="p-md font-medium">Coleoptera</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">FAMILY</td>
+<td class="p-md font-medium">Scarabaeidae</td>
+</tr>
+<tr class="bg-white hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">GENUS</td>
+<td class="p-md font-medium italic">Dynastes</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<td class="p-md text-secondary font-label-caps text-[11px]">SPECIES</td>
+<td class="p-md font-medium italic">D. hercules</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-white border border-outline-variant p-md">
+<h4 class="font-label-caps text-label-caps text-secondary mb-sm border-b border-outline-variant pb-xs">Habitat &amp; Ecology</h4>
+<div class="space-y-sm mt-sm">
+<p class="text-body-sm leading-relaxed text-on-surface-variant">
+                                    Primary inhabitants of tropical rainforests. They are nocturnal and are often attracted to light sources. Larvae develop within decaying tree trunks for up to 2 years.
+                                </p>
+<div class="w-full h-32 rounded-sm overflow-hidden bg-surface-container relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="A detailed digital map showing the geographical distribution of the Hercules beetle across Central and South America, with highlighted tropical rainforest zones. The map uses a sophisticated scientific aesthetic with emerald green and deep forest green color coding on a clean light-mode background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQCBarbZaBA5sgeGcUYv7wJPIQ7yvJDWu9KSP8buBFAUG_bsbVH7rSBX3tZ3bMfb5TySDoTtNz-DwblR1WLJK7G0TePTDGNkNO2-UhNzedxpIzQpNdyOSvfyDF0X7jpfLb2ahLf53ZA3VefKAqA52DrVaI5BFaCW_bPH8s-feLThk18ovhkwjZmKlPc91A_RE_0B1sLIem1eZkBs1urDtc-FRnRvCTJp-H-56QBVmbUC4PxILYT9Z0')"></div>
+<div class="absolute inset-0 bg-black/5 flex items-center justify-center">
+<span class="bg-white/90 px-sm py-1 rounded font-label-caps text-[10px] shadow-sm">View Global Distribution</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Related Records -->
+<section class="mt-xl">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Related Specimens</h3>
+<a class="text-primary font-label-caps text-label-caps hover:underline" href="#">View All Coleoptera</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Card 1 -->
+<div class="bg-white border border-outline-variant hover:shadow-scholarly transition-all cursor-pointer group">
+<div class="aspect-square bg-surface-container-low p-md overflow-hidden">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="A clean profile shot of a Chalcosoma atlas beetle against a white studio background. The lighting emphasizes the metallic bronze and green sheen of its exoskeleton and the three distinct horns. Minimalist scientific style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm_bxbmxCqGyCOt_T3GN5bgHz4druR9FGSbuBxLxFDsc_NDba3iza7Jkvbk22hLzg1lVDinqFreeIwRfe6wFQ7tfMTcpr1em8vg6BakA7hp23Qjef37zqe9q8QA0Qqql-4OkZFWAsq9mxSH5SZWO2DZ2cKoyn1idxPkbMtOAQJ2DZ9UY4Tj0imEXaLUMCdSaihc5v_3wwnZ-Sn0DH0Ez72NPK9zgEcKiJGRSQ9Ayl7zS0P6pVhyPfJ"/>
+</div>
+<div class="p-md">
+<div class="text-[10px] font-label-caps text-secondary mb-xs">SCARABAEIDAE</div>
+<div class="font-headline-sm text-[16px] leading-tight">Atlas Beetle</div>
+<div class="font-scientific-name text-body-sm italic text-secondary">Chalcosoma atlas</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-outline-variant hover:shadow-scholarly transition-all cursor-pointer group">
+<div class="aspect-square bg-surface-container-low p-md overflow-hidden">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="A macro portrait of a Stag Beetle (Lucanus cervus) focusing on its impressive mandibles. Scientific specimen presentation on a white background with soft shadows and high detail of the dark brown shell." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjwj8bZGyUebPaG6uCNRm1C7vn8Xhf2SwPCZzAeE_c3aIRO6u5Ikg6Q3cnNmwIoAUn2Xv47yxDWnASOLoaJ9QH2aN_Bxs0R8nIutCFLL98nwV2P8AFqFszK12_pQ1LqeO8J5gzMaHNIc3bNWV9UYMEVCSVwn9bAeiLfTBoLFXoLm3js8DDcpTGY0YcDy0Ezmc9ZwIzW5RBhRPYbiqShULT05z3zD4uxf2dEvwUNFEy7cqyXYSHm7Kz"/>
+</div>
+<div class="p-md">
+<div class="text-[10px] font-label-caps text-secondary mb-xs">LUCANIDAE</div>
+<div class="font-headline-sm text-[16px] leading-tight">Stag Beetle</div>
+<div class="font-scientific-name text-body-sm italic text-secondary">Lucanus cervus</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-outline-variant hover:shadow-scholarly transition-all cursor-pointer group">
+<div class="aspect-square bg-surface-container-low p-md overflow-hidden">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="Close up of an Elephant Beetle specimen Megasoma elephas, showing its fuzzy yellowish-brown coating and thick horns. High end museum quality photography on neutral grey background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLJ2n6inM8mnpoIfl1JuapnCqP4GdEVx0_3-9cEvEqOsTYDO9w0-z9yRy397oG_4xsCXRpfixFadSpLawbtW89QcZbPJlQyI_pMj5nlArLsDWTJgtnzSaLZK5mOugOAWOzoNS-WMXOBfkHvjEKzsAryUQYJiHlvt9CV085FfqyIJOwyxOpQ9wLOhdL6eFKu2PC0i69CGtyyC9fBYOAH22V242ipkfJTTBhyjRyw5kAeF2q-cVwqRvw"/>
+</div>
+<div class="p-md">
+<div class="text-[10px] font-label-caps text-secondary mb-xs">DYNASTINAE</div>
+<div class="font-headline-sm text-[16px] leading-tight">Elephant Beetle</div>
+<div class="font-scientific-name text-body-sm italic text-secondary">Megasoma elephas</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white border border-outline-variant hover:shadow-scholarly transition-all cursor-pointer group">
+<div class="aspect-square bg-surface-container-low p-md overflow-hidden">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="A rhinoceros beetle (Oryctes nasicornis) displayed in a scientific framing. The image shows the polished dark red-brown exoskeleton under bright, even light against a sterile white environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCexaff62Z_Q4RrvMtub9bI0kq1auiHy3rwWDRQWaqBdjFc4qT35xkzpMdKaS7hkLEZmYDjzZk66RnXj1yt-6quDI86UqCaRye19a6mzqRUH5CX_r8qBU8O95S47vFltMBsxLZNHNqYEcN6Z41MZCatqAy0u-D8MU1-iNsggcgUoKJm7kaFZ-N6Pxfj40UXsQUECauVhh7f2OhzAbdoh243mD4SvBTksYbtN3UM8NAW32ubE0it3ICJ"/>
+</div>
+<div class="p-md">
+<div class="text-[10px] font-label-caps text-secondary mb-xs">DYNASTINAE</div>
+<div class="font-headline-sm text-[16px] leading-tight">Rhino Beetle</div>
+<div class="font-scientific-name text-body-sm italic text-secondary">Oryctes nasicornis</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg mt-auto bg-surface-container dark:bg-surface-container-highest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-lg">
+<div class="max-w-md">
+<span class="font-label-caps text-label-caps text-primary block mb-sm">EntomoData Pro</span>
+<p class="font-body-sm text-body-sm text-secondary dark:text-on-secondary-fixed-variant leading-relaxed">
+                    © 2024 International Entomological Society. All scientific data preserved under Open-Access Licenses. Dedicated to the digital preservation and global sharing of arthropod biodiversity.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-xl">
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-[10px] text-secondary">RESOURCES</span>
+<a class="font-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4" href="#">Privacy Policy</a>
+<a class="font-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-caps text-[10px] text-secondary">DOCUMENTATION</span>
+<a class="font-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4" href="#">Curation Guidelines</a>
+<a class="font-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4" href="#">API Documentation</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (el.getAttribute('href') === '#') e.preventDefault();
+            });
+        });
+
+        // Tab switching logic (simulated)
+        const tabs = document.querySelectorAll('.font-label-caps.whitespace-nowrap');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('border-primary', 'text-primary');
+                    t.classList.add('border-transparent', 'text-secondary');
+                });
+                tab.classList.remove('border-transparent', 'text-secondary');
+                tab.classList.add('border-primary', 'text-primary');
+            });
+        });
+    </script>
+</body></html>

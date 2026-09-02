@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Management - EntomoData Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Source+Sans+3:wght@100..900&family=Source+Serif+4:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#545f73",
+                    "surface-container-low": "#f2f4f6",
+                    "tertiary-container": "#af5f36",
+                    "error": "#ba1a1a",
+                    "outline": "#6d7a72",
+                    "secondary-container": "#d5e0f8",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-primary-container": "#f5fff7",
+                    "on-tertiary-fixed-variant": "#76330d",
+                    "on-tertiary-container": "#fffbff",
+                    "secondary-fixed-dim": "#bcc7de",
+                    "on-secondary-fixed": "#111c2d",
+                    "on-surface": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#d8dadc",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-error-container": "#93000a",
+                    "on-background": "#191c1e",
+                    "on-tertiary-fixed": "#351000",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "background": "#f7f9fb",
+                    "tertiary": "#904821",
+                    "primary": "#006948",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#85f8c4",
+                    "on-primary-fixed": "#002114",
+                    "secondary-fixed": "#d8e3fb",
+                    "on-secondary-container": "#586377",
+                    "inverse-primary": "#68dba9",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "surface-container": "#eceef0",
+                    "primary-fixed-dim": "#68dba9",
+                    "primary-container": "#00855d",
+                    "outline-variant": "#bccac0",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-fixed-dim": "#ffb693",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#3d4a42",
+                    "on-primary-fixed-variant": "#005137",
+                    "surface-bright": "#f7f9fb",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-tint": "#006c4a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "container-max": "1440px",
+                    "gutter": "20px",
+                    "md": "16px",
+                    "xl": "48px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-sm": ["\"Source Serif 4\""],
+                    "headline-md": ["\"Source Serif 4\""],
+                    "body-md": ["\"Source Sans 3\""],
+                    "scientific-name": ["\"Source Serif 4\""],
+                    "data-mono": ["JetBrains Mono"],
+                    "display-lg": ["\"Source Serif 4\""],
+                    "body-lg": ["\"Source Sans 3\""],
+                    "body-sm": ["\"Source Sans 3\""]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "scientific-name": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "data-mono": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f7f9fb;
+            font-family: "Source Sans 3", sans-serif;
+        }
+        .sidebar-item-active {
+            background-color: #00855d;
+            color: #f5fff7;
+            border-radius: 0.25rem;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex items-center justify-between px-lg h-16 max-w-container-max mx-auto left-0 right-0">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim tracking-tight">EntomoData Pro</span>
+<div class="hidden md:flex ml-lg gap-md">
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors duration-150 px-sm py-1 rounded" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors duration-150 px-sm py-1 rounded" href="#">Categories</a>
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors duration-150 px-sm py-1 rounded" href="#">Admin</a>
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low transition-colors duration-150 px-sm py-1 rounded" href="#">Research</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-secondary">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-container-low border-none rounded-lg text-body-sm focus:ring-2 focus:ring-primary w-64" placeholder="Search specimen..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">settings</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="h-full w-full object-cover" data-alt="Professional studio portrait of a senior entomologist with silver hair, wearing a clean white lab coat, smiling warmly against a soft-focus laboratory background filled with glass jars and microscopes. The lighting is bright and scholarly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApTpMGQB4LXb0au15WyjBRuolPx5ljwhzvF08RLmWl6GqEajrwPXgFk87HK2hoo9M4I1h-qrZnuwdZqPKpOdxG_O29x_pJ3mkc2i345-p-t81p1Er13wc-_pb9TNHtNdFH5H7rWB2jY7MXHaEDdjkZIHTe57fxmnIFnIKA-9iQMzZocz2SScpUnNmPUPdWiwBxdtLRJwODHAGFIWitIXPmvqzJYxzL5ReljNsAqZfFpZMZ4KFXqlDW"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 w-64 bg-surface-container-lowest dark:bg-surface-container border-r border-outline-variant dark:border-outline p-md pt-20">
+<div class="flex items-center gap-md mb-xl px-sm">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bug_report</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed leading-tight">Entomology Database</h2>
+<p class="font-label-caps text-[10px] text-secondary">Academic Research Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-3 font-label-caps text-label-caps text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+                Catalog
+            </a>
+<a class="flex items-center gap-md px-md py-3 font-label-caps text-label-caps text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+                Taxonomy
+            </a>
+<a class="flex items-center gap-md px-md py-3 font-label-caps text-label-caps text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Archives
+            </a>
+<a class="flex items-center gap-md px-md py-3 font-label-caps text-label-caps bg-primary-container text-on-primary-container rounded-lg scale-95 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+                Management
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-1">
+<button class="w-full bg-primary text-on-primary font-label-caps py-2 rounded mb-md hover:opacity-90 transition-opacity">Export Data</button>
+<a class="flex items-center gap-md px-md py-2 font-label-caps text-label-caps text-secondary hover:bg-surface-container-high rounded transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-md py-2 font-label-caps text-label-caps text-secondary hover:bg-surface-container-high rounded transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-20 min-h-screen flex flex-col">
+<div class="p-lg max-w-7xl mx-auto w-full">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface">Data Management</h1>
+<p class="font-body-lg text-body-lg text-secondary">Overview of the entomological collection and system health.</p>
+</div>
+<button class="flex items-center gap-sm bg-primary text-on-primary px-lg py-3 rounded font-body-md font-semibold hover:bg-primary-container transition-colors shadow-sm active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                    Add New Insect
+                </button>
+</div>
+<!-- Statistics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg mb-xl">
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded transition-colors hover:border-primary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded">microbiology</span>
+<span class="text-primary font-data-mono text-sm">+12%</span>
+</div>
+<p class="font-label-caps text-secondary mb-1">Total Species</p>
+<h3 class="font-headline-md text-headline-md">12,482</h3>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded transition-colors hover:border-primary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-tertiary bg-tertiary-fixed/30 p-2 rounded">history</span>
+<span class="text-tertiary font-data-mono text-sm">Today</span>
+</div>
+<p class="font-label-caps text-secondary mb-1">Recent Entries</p>
+<h3 class="font-headline-md text-headline-md">145</h3>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded transition-colors hover:border-primary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed/30 p-2 rounded">group</span>
+<span class="text-secondary font-data-mono text-sm">Active</span>
+</div>
+<p class="font-label-caps text-secondary mb-1">User Count</p>
+<h3 class="font-headline-md text-headline-md">892</h3>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded transition-colors hover:border-primary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-primary bg-primary-fixed/30 p-2 rounded">category</span>
+<span class="text-primary font-data-mono text-sm">Orders</span>
+</div>
+<p class="font-label-caps text-secondary mb-1">Categories</p>
+<h3 class="font-headline-md text-headline-md">28</h3>
+</div>
+</div>
+<!-- Management Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden shadow-sm">
+<div class="p-md border-b border-outline-variant bg-surface flex flex-col sm:flex-row justify-between items-center gap-md">
+<h4 class="font-headline-sm text-headline-sm">Specimen Registry</h4>
+<div class="flex items-center gap-sm">
+<button class="flex items-center gap-xs px-md py-1.5 border border-outline-variant rounded font-label-caps text-label-caps text-secondary hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                        </button>
+<button class="flex items-center gap-xs px-md py-1.5 border border-outline-variant rounded font-label-caps text-label-caps text-secondary hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-sm">sort</span> Sort
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#1e293b] text-white">
+<th class="px-lg py-4 font-label-caps text-label-caps uppercase tracking-wider">Name / ID</th>
+<th class="px-lg py-4 font-label-caps text-label-caps uppercase tracking-wider">Category</th>
+<th class="px-lg py-4 font-label-caps text-label-caps uppercase tracking-wider">Status</th>
+<th class="px-lg py-4 font-label-caps text-label-caps uppercase tracking-wider">Last Updated</th>
+<th class="px-lg py-4 font-label-caps text-label-caps uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="bg-white hover:bg-[#f1f5f9] transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-sm overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A macro photography shot of a Monarch butterfly specimen, showing extreme detail of the orange and black wing patterns. The butterfly is pinned in a classic scientific display style inside a white archival box with a small handwritten label. Soft natural lighting emphasizes the texture of the wings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJYX1-KM3vWO4PBTHhHTQPe2kIIKgdHTzW6yoiR8_LZJlJPUBimme-s7ic2V38SrUf_CflQwfM0sr1epV2zoczlXuawtXOf_IwtQpZ9RG9GZyImUlvEQB4_aqeqO_UGGK4h-z-iCLxtNrrfYtWxvK1OUKx4iOt27eA8zcAwbzKQoOQwP3Wkly7oCRqsw0FJE25R7g0MBj4xGitIz19_XExp2_zQWYriit2oxhfOnvvFNAUWkU1MGjG"/>
+</div>
+<div>
+<div class="font-body-md font-semibold">Danaus plexippus</div>
+<div class="font-data-mono text-xs text-secondary">SPEC-8821-A</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-block px-2 py-1 bg-surface-container-high rounded text-[10px] font-label-caps text-secondary-fixed-variant border border-outline-variant">LEPIDOPTERA</span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-xs text-primary font-semibold text-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Verified
+                                    </div>
+</td>
+<td class="px-lg py-4 font-data-mono text-sm text-secondary">2024-05-12</td>
+<td class="px-lg py-4 text-right">
+<div class="flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" title="View">visibility</button>
+<button class="material-symbols-outlined text-secondary hover:text-tertiary transition-colors" title="Edit">edit</button>
+<button class="material-symbols-outlined text-secondary hover:text-error transition-colors" title="Delete">delete</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-[#f8fafc] hover:bg-[#f1f5f9] transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-sm overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up photograph of a stag beetle with impressive large mandibles, positioned on a piece of dark, weathered oak bark. The beetle's exoskeleton has a rich, deep mahogany sheen. The lighting is dramatic and scholarly, reminiscent of 19th-century scientific illustrations but with modern digital clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp4_vpe6eYj0vgHwh1L2y_KV3gRLq2MvrGsRiI-lRSEpRUVkvRT49JNlPcPy4BDPQ_LWbC8ur_td6heSP9tT7Cs_htWYYeIavOo56jD1vtZ5R2no4bzD67SJpwPSENNjhi3QQgm6YPfsac3uZW8pA2ttaBM59yVIVmmDuwqQJ_AVjAQgXIWn4S64unUMKyl-rywaU5BrFTKHl_zQj4xROdm7BSdQIgKFj9Zl91wtdLgffjsx1zrjOp"/>
+</div>
+<div>
+<div class="font-body-md font-semibold">Lucanus cervus</div>
+<div class="font-data-mono text-xs text-secondary">SPEC-9014-B</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-block px-2 py-1 bg-surface-container-high rounded text-[10px] font-label-caps text-secondary-fixed-variant border border-outline-variant">COLEOPTERA</span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-xs text-tertiary font-semibold text-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Pending Review
+                                    </div>
+</td>
+<td class="px-lg py-4 font-data-mono text-sm text-secondary">2024-05-14</td>
+<td class="px-lg py-4 text-right">
+<div class="flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" title="View">visibility</button>
+<button class="material-symbols-outlined text-secondary hover:text-tertiary transition-colors" title="Edit">edit</button>
+<button class="material-symbols-outlined text-secondary hover:text-error transition-colors" title="Delete">delete</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-white hover:bg-[#f1f5f9] transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-sm overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Scientific macro shot of a green darner dragonfly captured mid-air, with its transparent, iridescent wings perfectly frozen in motion against a soft, out-of-focus background of pond reeds. The image has a scholarly, archival quality with natural lighting and high contrast, highlighting the intricate vein structure of the wings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1LYi1gQoNwSFg4AooLE0QvJFAmGOLMecqDNM1FZmu_V9QEMZHO4f1GnRn2jTfXRcaWqZMqv9UhDSz9R0DhhYOmgU23RzOciTS8QXSKG7jc2wwSkVl0ePGaLqUzE92nyVfUU9Mg-bXba3kcI4nXzezM2UptnglFqi7VUAsCV8GdeAIS8jv4c_KjkMQAlxnjoaP3tsEiH_5mweMe9WKfhrjwAO2M6j4wbNHhSY5SBaoGG4OZm3XGTfu"/>
+</div>
+<div>
+<div class="font-body-md font-semibold">Anax junius</div>
+<div class="font-data-mono text-xs text-secondary">SPEC-7732-C</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-block px-2 py-1 bg-surface-container-high rounded text-[10px] font-label-caps text-secondary-fixed-variant border border-outline-variant">ODONATA</span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-xs text-primary font-semibold text-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Verified
+                                    </div>
+</td>
+<td class="px-lg py-4 font-data-mono text-sm text-secondary">2024-05-10</td>
+<td class="px-lg py-4 text-right">
+<div class="flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" title="View">visibility</button>
+<button class="material-symbols-outlined text-secondary hover:text-tertiary transition-colors" title="Edit">edit</button>
+<button class="material-symbols-outlined text-secondary hover:text-error transition-colors" title="Delete">delete</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="bg-[#f8fafc] hover:bg-[#f1f5f9] transition-colors group">
+<td class="px-lg py-4">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-sm overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Detailed close-up of an orchid mantis specimen, showcasing its stunning pink and white petal-like legs. The mantis is perched on a delicate white orchid blossom, creating a camouflage effect. The style is scholarly and minimalist, with soft studio lighting that brings out the translucent quality of the specimen's body." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmcZ-x8b6aLqyx34T5_UpcMSCzUfh7EXocalcqn4EPQofJ0hQp9pRYu48pBYRvk4FhGPltsc5JmyJLN8gh1fzYTaERRbUj517lI4e7qg8o61u7xyh-_-IwxPS_SbAyAYOEOL3I3W6jc5TTs3HPLZZ-bFcQAW5UI7efsKf6IsZvtPSCYLyw0AVYCxXKDbxwecnZK8IXui-pJRPiapLHCgLPQ7LwPvbP20oUCBydvnCMTGju6316ivrk"/>
+</div>
+<div>
+<div class="font-body-md font-semibold">Hymenopus coronatus</div>
+<div class="font-data-mono text-xs text-secondary">SPEC-6541-D</div>
+</div>
+</div>
+</td>
+<td class="px-lg py-4">
+<span class="inline-block px-2 py-1 bg-surface-container-high rounded text-[10px] font-label-caps text-secondary-fixed-variant border border-outline-variant">MANTODEA</span>
+</td>
+<td class="px-lg py-4">
+<div class="flex items-center gap-xs text-error font-semibold text-sm">
+<span class="w-2 h-2 rounded-full bg-error"></span> Flagged
+                                    </div>
+</td>
+<td class="px-lg py-4 font-data-mono text-sm text-secondary">2024-05-15</td>
+<td class="px-lg py-4 text-right">
+<div class="flex justify-end gap-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" title="View">visibility</button>
+<button class="material-symbols-outlined text-secondary hover:text-tertiary transition-colors" title="Edit">edit</button>
+<button class="material-symbols-outlined text-secondary hover:text-error transition-colors" title="Delete">delete</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md bg-surface-container-low border-t border-outline-variant flex justify-between items-center">
+<p class="font-body-sm text-body-sm text-secondary">Showing <span class="font-bold">4</span> of <span class="font-bold">12,482</span> entries</p>
+<div class="flex gap-sm">
+<button class="px-3 py-1 border border-outline-variant rounded bg-white text-secondary hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded font-data-mono text-sm">1</button>
+<button class="px-3 py-1 border border-outline-variant rounded bg-white text-secondary hover:bg-surface-container-high transition-colors">2</button>
+<button class="px-3 py-1 border border-outline-variant rounded bg-white text-secondary hover:bg-surface-container-high transition-colors">3</button>
+<button class="px-3 py-1 border border-outline-variant rounded bg-white text-secondary hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg mt-auto bg-surface-container dark:bg-surface-container-highest border-t border-outline-variant">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-lg">
+<div>
+<span class="font-label-caps text-label-caps text-primary">EntomoData Pro</span>
+<p class="font-body-sm text-body-sm text-secondary dark:text-on-secondary-fixed-variant mt-2 max-w-md">
+                        © 2024 International Entomological Society. All scientific data preserved under Open-Access Licenses.
+                    </p>
+</div>
+<div class="flex flex-wrap gap-lg">
+<a class="font-body-sm text-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">Curation Guidelines</a>
+<a class="font-body-sm text-body-sm text-secondary-container dark:text-secondary-fixed hover:text-primary dark:hover:text-primary-fixed underline-offset-4 transition-colors" href="#">API Documentation</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Modal Placeholder (Hidden) -->
+<div class="fixed inset-0 z-[100] hidden items-center justify-center bg-secondary/40 backdrop-blur-sm p-4" id="addFormModal">
+<div class="bg-surface-container-lowest w-full max-w-2xl rounded-xl border border-outline-variant shadow-2xl overflow-hidden flex flex-col max-h-[921px]">
+<div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface">
+<h2 class="font-headline-sm text-headline-sm">New Specimen Entry</h2>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-high p-2 rounded-full" onclick="toggleModal()">close</button>
+</div>
+<div class="p-lg overflow-y-auto custom-scrollbar flex-1">
+<form class="space-y-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-label-caps text-label-caps mb-1 text-secondary uppercase">Scientific Name</label>
+<input class="w-full px-md py-2 border border-outline-variant focus:border-primary focus:ring-0 rounded" placeholder="e.g. Apis mellifera" type="text"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps mb-1 text-secondary uppercase">Common Name</label>
+<input class="w-full px-md py-2 border border-outline-variant focus:border-primary focus:ring-0 rounded" placeholder="e.g. Honey Bee" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps mb-1 text-secondary uppercase">Order / Classification</label>
+<select class="w-full px-md py-2 border border-outline-variant focus:border-primary focus:ring-0 rounded">
+<option>Lepidoptera</option>
+<option>Coleoptera</option>
+<option>Hymenoptera</option>
+<option>Odonata</option>
+</select>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps mb-1 text-secondary uppercase">Description & Observations</label>
+<textarea class="w-full px-md py-2 border border-outline-variant focus:border-primary focus:ring-0 rounded" placeholder="Enter detailed physical characteristics and collection notes..." rows="4"></textarea>
+</div>
+<div class="p-lg border-dashed border-2 border-outline-variant rounded flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors mb-md">upload_file</span>
+<p class="font-body-md text-secondary">Drag and drop high-res specimen photos or <span class="text-primary font-bold">Browse</span></p>
+</div>
+</form>
+</div>
+<div class="p-lg border-t border-outline-variant bg-surface-container-low flex justify-end gap-md">
+<button class="px-lg py-2 border border-outline text-on-surface font-body-md rounded hover:bg-white transition-colors" onclick="toggleModal()">Cancel</button>
+<button class="px-lg py-2 bg-primary text-on-primary font-body-md font-bold rounded hover:opacity-90 transition-opacity">Save Record</button>
+</div>
+</div>
+</div>
+<script>
+        function toggleModal() {
+            const modal = document.getElementById('addFormModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        // Attach to primary button
+        document.querySelector('button.bg-primary.text-on-primary').addEventListener('click', toggleModal);
+
+        // Simple row hover effect enhancements
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                // Future: link to details page or select row
+                console.log('Row clicked');
+            });
+        });
+    </script>
+</body></html>

@@ -1,26 +1,232 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Container Max Widths ── */
+  --container-max: 1440px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ── Color Palette (Material 3 - Academic Green) ── */
+  --color-secondary: #545f73;
+  --color-surface-container-low: #f2f4f6;
+  --color-tertiary-container: #af5f36;
+  --color-error: #ba1a1a;
+  --color-outline: #6d7a72;
+  --color-secondary-container: #d5e0f8;
+  --color-surface-container-highest: #e0e3e5;
+  --color-on-primary-container: #f5fff7;
+  --color-on-tertiary-fixed-variant: #76330d;
+  --color-on-tertiary-container: #fffbff;
+  --color-secondary-fixed-dim: #bcc7de;
+  --color-on-secondary-fixed: #111c2d;
+  --color-on-surface: #191c1e;
+  --color-error-container: #ffdad6;
+  --color-surface-dim: #d8dadc;
+  --color-inverse-on-surface: #eff1f3;
+  --color-on-error-container: #93000a;
+  --color-on-background: #191c1e;
+  --color-on-tertiary-fixed: #351000;
+  --color-on-secondary-fixed-variant: #3c475a;
+  --color-background: #f7f9fb;
+  --color-tertiary: #904821;
+  --color-primary: #006948;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #85f8c4;
+  --color-on-primary-fixed: #002114;
+  --color-secondary-fixed: #d8e3fb;
+  --color-on-secondary-container: #586377;
+  --color-inverse-primary: #68dba9;
+  --color-on-error: #ffffff;
+  --color-surface-variant: #e0e3e5;
+  --color-on-secondary: #ffffff;
+  --color-surface: #f7f9fb;
+  --color-surface-container: #eceef0;
+  --color-primary-fixed-dim: #68dba9;
+  --color-primary-container: #00855d;
+  --color-outline-variant: #bccac0;
+  --color-inverse-surface: #2d3133;
+  --color-surface-container-high: #e6e8ea;
+  --color-tertiary-fixed-dim: #ffb693;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface-variant: #3d4a42;
+  --color-on-primary-fixed-variant: #005137;
+  --color-surface-bright: #f7f9fb;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-fixed: #ffdbcc;
+  --color-surface-tint: #006c4a;
+
+  /* ── Border Radius ── */
+  --radius-DEFAULT: 4px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ── Font Families ── */
+  --font-label-caps: "JetBrains Mono", monospace;
+  --font-headline-sm: "Source Serif 4", serif;
+  --font-headline-md: "Source Serif 4", serif;
+  --font-body-md: "Source Sans 3", sans-serif;
+  --font-scientific-name: "Source Serif 4", serif;
+  --font-data-mono: "JetBrains Mono", monospace;
+  --font-display-lg: "Source Serif 4", serif;
+  --font-body-lg: "Source Sans 3", sans-serif;
+  --font-body-sm: "Source Sans 3", sans-serif;
+
+  /* ── Font Sizes & Line Heights ── */
+  --text-display-lg: 40px;
+  --text-display-lg--line-height: 48px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-md: 28px;
+  --text-headline-md--line-height: 36px;
+  --text-headline-md--font-weight: 600;
+
+  --text-headline-sm: 20px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  --text-scientific-name: 16px;
+  --text-scientific-name--line-height: 24px;
+  --text-scientific-name--font-weight: 500;
+
+  --text-label-caps: 12px;
+  --text-label-caps--line-height: 16px;
+  --text-label-caps--letter-spacing: 0.05em;
+  --text-label-caps--font-weight: 600;
+
+  --text-data-mono: 13px;
+  --text-data-mono--line-height: 18px;
+  --text-data-mono--font-weight: 400;
+
+  /* ── Animations ── */
+  --animate-fade-in: fade-in 0.5s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out both;
+  --animate-slide-in: slide-in 0.3s ease-out both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
   }
 }
 
+/* ── Base Styles ── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+}
+.filled-icon {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ── Scrollbar Styling ── */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-surface-container);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline);
+  border-radius: 4px;
+}
+
+/* ── Academic Card ── */
+.academic-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+.academic-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 8px 24px -4px rgba(0, 105, 72, 0.12),
+    0 4px 8px -2px rgba(0, 0, 0, 0.06);
+}
+.academic-card img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.academic-card:hover img {
+  transform: scale(1.08);
+}
+
+/* ── Scholarly Shadow ── */
+.shadow-scholarly {
+  box-shadow:
+    0 4px 16px -2px rgba(0, 105, 72, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.05);
+}
+
+.login-card-shadow {
+  box-shadow:
+    0 20px 60px -12px rgba(0, 0, 0, 0.15),
+    0 8px 24px -4px rgba(0, 105, 72, 0.08);
+}
+
+/* ── Glass Header ── */
+.glass-header {
+  backdrop-filter: blur(12px) saturate(1.8);
+  background-color: rgba(247, 249, 251, 0.85);
+}
+
+/* ── Scholarly Dotted Grid Pattern ── */
+.scholarly-texture {
+  background-image: radial-gradient(#6d7a72 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  opacity: 0.05;
+}
+
+/* ── Image Placeholder ── */
+.img-placeholder {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 25%, #a5d6a7 50%, #81c784 75%, #66bb6a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-placeholder .material-symbols-outlined {
+  font-size: 48px;
+  color: rgba(0, 105, 72, 0.25);
+}
+
+/* ── Utility: max-w-container-max ── */
+.max-w-container-max {
+  max-width: 1440px;
+}
+
+/* ── No Scrollbar ── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
