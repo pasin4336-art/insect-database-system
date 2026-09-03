@@ -4,8 +4,8 @@ import * as mockDb from './mockData';
 // Connection configuration using environment variables
 const config = {
   host: process.env.DB_HOST || '127.0.0.1',
-  user: process.env.DB_USER !== undefined ? process.env.DB_USER : 'insect_user',
-  password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : 'insect_password',
+  user: process.env.DB_USER !== undefined ? process.env.DB_USER : 'root',
+  password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : '',
   database: process.env.DB_DATABASE || 'insect_db',
   port: parseInt(process.env.DB_PORT || '3306'),
   ssl: (process.env.DB_SSL === 'true' || process.env.DB_HOST?.includes('aivencloud.com') || process.env.DB_HOST?.includes('tidbcloud.com')) ? { rejectUnauthorized: false } : undefined,
@@ -17,160 +17,267 @@ const config = {
 let pool;
 let isDbOnline = false;
 
-try {
-  pool = mysql.createPool(config);
-  isDbOnline = true;
-} catch (error) {
-  console.warn("⚠️ MySQL pool creation failed. Falling back to local mock data.", error.message);
+// Attempt to create MySQL pool if DB_HOST is configured and not default unconfigured localhost
+if (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost') {
+  try {
+    pool = mysql.createPool(config);
+    isDbOnline = true;
+  } catch (error) {
+    console.warn("⚠️ MySQL pool creation failed. Falling back to mock data.", error.message);
+  }
+} else if (process.env.NODE_ENV !== 'production') {
+  // Local development mode
+  try {
+    pool = mysql.createPool(config);
+    isDbOnline = true;
+  } catch (error) {
+    console.warn("⚠️ Local MySQL pool creation failed. Falling back to mock data.", error.message);
+  }
 }
 
 // Wrapper pool object
 const db = {
   async query(sql, params = []) {
-    // If we think the DB is online, try using it
+    // 1. Try real database if configured and online
     if (isDbOnline && pool) {
       try {
         const [rows] = await pool.query(sql, params);
         return [rows];
       } catch (err) {
-        // If connection is refused, downgrade to offline mode and run fallback
-        if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT' || err.code === 'PROTOCOL_CONNECTION_LOST') {
-          console.warn("⚠️ Database is offline (Connection Refused/Timedout). Using mock database fallback.");
+        if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT' || err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ER_ACCESS_DENIED_ERROR') {
+          console.warn("⚠️ Database is unreachable. Falling back to Mock DB Engine.");
           isDbOnline = false;
         } else {
-          // Other query errors (syntax, etc) should be thrown
-          throw err;
+          // If query error, log and fallback safely
+          console.warn("⚠️ Query execution failed on DB. Falling back to Mock DB Engine.", err.message);
         }
       }
     }
 
-    // --- Mock Database Fallback Engine ---
+    // 2. --- Mock Database Fallback Engine ---
     const cleanSql = sql.trim().replace(/\s+/g, ' ');
 
-    // 1. SELECT Categories
-    if (cleanSql.toUpperCase().includes('SELECT') && cleanSql.toUpperCase().includes('FROM CATEGORIES')) {
-      return [mockDb.categories];
+    // Handle DDL (ALTER TABLE, CREATE TABLE, etc.) and Transactions
+    if (cleanSql.toUpperCase().startsWith('ALTER TABLE') || 
+        cleanSql.toUpperCase().startsWith('CREATE TABLE') || 
+        cleanSql.toUpperCase().startsWith('SET ') || 
+        cleanSql.toUpperCase().startsWith('START TRANSACTION') || 
+        cleanSql.toUpperCase().startsWith('COMMIT')) {
+      return [{ affectedRows: 0 }];
     }
 
-    // 2. SELECT Users
-    if (cleanSql.toUpperCase().includes('SELECT') && cleanSql.toUpperCase().includes('FROM USERS')) {
-      // Find user by username or email
-      if (params.length > 0) {
-        const queryVal = params[0]; // e.g. Username
-        const matchVal = params.length > 1 ? params[1] : queryVal; // e.g. Email (if passed)
-        const match = mockDb.users.filter(u => u.username === queryVal || u.email === matchVal);
-        return [match];
-      }
-      return [mockDb.users];
-    }
+    // ==========================================
+    // CATEGORIES CRUD
+    // ==========================================
+    if (cleanSql.toUpperCase().includes('CATEGORIES')) {
+      if (!mockDb.categories) mockDb.categories = [];
 
-    // 3. SELECT Insects with JOIN categories
-    if (cleanSql.toUpperCase().includes('SELECT') && cleanSql.toUpperCase().includes('FROM INSECTS')) {
-      // Check if querying a single insect: WHERE i.id = ? or i.id = ?
-      const matchId = cleanSql.match(/WHERE\s+(?:i\.)?id\s*=\s*\?/i) || cleanSql.match(/WHERE\s+(?:insects\.)?id\s*=\s*\?/i);
-      if (matchId && params.length > 0) {
-        const searchId = parseInt(params[0]);
-        const singleInsect = mockDb.insects.find(ins => ins.id === searchId);
-        return [singleInsect ? [singleInsect] : []];
+      // SELECT Categories
+      if (cleanSql.toUpperCase().startsWith('SELECT')) {
+        return [mockDb.categories];
       }
 
-      // Catalog query with filters:
-      let filtered = [...mockDb.insects];
+      // INSERT INTO categories
+      if (cleanSql.toUpperCase().startsWith('INSERT INTO')) {
+        const [name, description] = params;
+        const newId = (mockDb.categories.length > 0 ? Math.max(...mockDb.categories.map(c => c.id || 0)) : 0) + 1;
+        const newCat = {
+          id: newId,
+          name: name || '',
+          description: description || '',
+          created_at: new Date().toISOString()
+        };
+        mockDb.categories.push(newCat);
+        return [{ insertId: newId, affectedRows: 1 }];
+      }
 
-      // Parse SQL logic for search & category filter
-      // Check if search query was passed
-      // We expect parameters order: [search, search, categoryId] or [search, search] or [categoryId]
-      let paramIdx = 0;
-      
-      // Let's analyze query parameters dynamically
-      const hasSearch = cleanSql.includes('LIKE ?');
-      const hasCategory = cleanSql.includes('category_id = ?');
-
-      if (hasSearch && params[paramIdx] !== undefined) {
-        const searchTerm = params[paramIdx].toString().replace(/%/g, '').toLowerCase();
-        paramIdx += 2; // skip both search params (common_name & scientific_name)
-        if (searchTerm) {
-          filtered = filtered.filter(ins => 
-            ins.common_name.toLowerCase().includes(searchTerm) || 
-            ins.scientific_name.toLowerCase().includes(searchTerm)
-          );
+      // UPDATE categories
+      if (cleanSql.toUpperCase().startsWith('UPDATE')) {
+        const [name, description, id] = params;
+        const catId = parseInt(id);
+        const idx = mockDb.categories.findIndex(c => c.id === catId);
+        if (idx !== -1) {
+          mockDb.categories[idx] = {
+            ...mockDb.categories[idx],
+            name: name || mockDb.categories[idx].name,
+            description: description !== undefined ? description : mockDb.categories[idx].description
+          };
+          return [{ affectedRows: 1 }];
         }
+        return [{ affectedRows: 0 }];
       }
 
-      if (hasCategory && params[paramIdx] !== undefined) {
-        const catId = parseInt(params[paramIdx]);
-        if (catId) {
-          filtered = filtered.filter(ins => ins.category_id === catId);
+      // DELETE FROM categories
+      if (cleanSql.toUpperCase().startsWith('DELETE FROM')) {
+        const deleteId = parseInt(params[0]);
+        const idx = mockDb.categories.findIndex(c => c.id === deleteId);
+        if (idx !== -1) {
+          mockDb.categories.splice(idx, 1);
+          return [{ affectedRows: 1 }];
         }
+        return [{ affectedRows: 0 }];
+      }
+    }
+
+    // ==========================================
+    // USERS CRUD
+    // ==========================================
+    if (cleanSql.toUpperCase().includes('USERS')) {
+      if (!mockDb.users) mockDb.users = [];
+
+      // SELECT Users (by username/email or all)
+      if (cleanSql.toUpperCase().startsWith('SELECT')) {
+        if (params.length > 0) {
+          const queryVal = params[0];
+          const matchVal = params.length > 1 ? params[1] : queryVal;
+          const match = mockDb.users.filter(u => u.username === queryVal || u.email === matchVal);
+          return [match];
+        }
+        return [mockDb.users];
       }
 
-      // Sort by created_at DESC
-      filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      return [filtered];
+      // INSERT INTO users
+      if (cleanSql.toUpperCase().startsWith('INSERT INTO')) {
+        const [username, hashedPassword, email, role] = params;
+        const newId = (mockDb.users.length > 0 ? Math.max(...mockDb.users.map(u => u.id || 0)) : 0) + 1;
+        const newUser = {
+          id: newId,
+          username: username || '',
+          password: hashedPassword || '',
+          email: email || '',
+          role: role || 'user',
+          created_at: new Date().toISOString()
+        };
+        mockDb.users.push(newUser);
+        return [{ insertId: newId, affectedRows: 1 }];
+      }
+
+      // UPDATE users
+      if (cleanSql.toUpperCase().startsWith('UPDATE')) {
+        let username, email, role, password, userId;
+        if (params.length === 5) {
+          [username, email, role, password, userId] = params;
+        } else {
+          [username, email, role, userId] = params;
+        }
+        const uId = parseInt(userId);
+        const idx = mockDb.users.findIndex(u => u.id === uId);
+        if (idx !== -1) {
+          mockDb.users[idx] = {
+            ...mockDb.users[idx],
+            username: username || mockDb.users[idx].username,
+            email: email || mockDb.users[idx].email,
+            role: role || mockDb.users[idx].role,
+            ...(password ? { password } : {})
+          };
+          return [{ affectedRows: 1 }];
+        }
+        return [{ affectedRows: 0 }];
+      }
+
+      // DELETE FROM users
+      if (cleanSql.toUpperCase().startsWith('DELETE FROM')) {
+        const deleteId = parseInt(params[0]);
+        const idx = mockDb.users.findIndex(u => u.id === deleteId);
+        if (idx !== -1) {
+          mockDb.users.splice(idx, 1);
+          return [{ affectedRows: 1 }];
+        }
+        return [{ affectedRows: 0 }];
+      }
     }
 
-    // 4. INSERT INTO insects
-    if (cleanSql.toUpperCase().startsWith('INSERT INTO INSECTS')) {
-      const [
-        category_id, common_name, scientific_name, description, habitat, status, image_url,
-        kingdom, phylum, class_name, family, genus, species,
-        mouth_type, wing_type, leg_type, antenna_type, region, province, source
-      ] = params;
-      const cat = mockDb.categories.find(c => c.id === parseInt(category_id));
-      const newId = mockDb.insects.reduce((max, ins) => ins.id > max ? ins.id : max, 0) + 1;
-      
-      const newInsect = {
-        id: newId,
-        category_id: parseInt(category_id),
-        category_name: cat ? cat.name : 'Unknown',
-        common_name,
-        scientific_name,
-        description,
-        habitat,
-        status: status || 'common',
-        image_url: image_url || '',
-        kingdom: kingdom || 'Animalia',
-        phylum: phylum || 'Arthropoda',
-        class_name: class_name || 'Insecta',
-        family: family || '',
-        genus: genus || (scientific_name ? scientific_name.split(' ')[0] : ''),
-        species: species || scientific_name || '',
-        mouth_type: mouth_type || '',
-        wing_type: wing_type || '',
-        leg_type: leg_type || '',
-        antenna_type: antenna_type || '',
-        region: region || '',
-        province: province || '',
-        source: source || '',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-      
-      mockDb.insects.push(newInsect);
-      return [{ insertId: newId, affectedRows: 1 }];
+    // ==========================================
+    // DISTINCT FILTERS
+    // ==========================================
+    if (cleanSql.toUpperCase().includes('SELECT DISTINCT HABITAT')) {
+      const habitats = Array.from(new Set(mockDb.insects.map(i => i.habitat).filter(Boolean)));
+      return [habitats.map(h => ({ habitat: h }))];
     }
 
-    // 5. UPDATE insects
-    if (cleanSql.toUpperCase().startsWith('UPDATE INSECTS')) {
-      const [
-        category_id, common_name, scientific_name, description, habitat, status, image_url,
-        kingdom, phylum, class_name, family, genus, species,
-        mouth_type, wing_type, leg_type, antenna_type, region, province, source, id
-      ] = params;
-      const insectIdx = mockDb.insects.findIndex(ins => ins.id === parseInt(id));
-      
-      if (insectIdx !== -1) {
+    if (cleanSql.toUpperCase().includes('SELECT DISTINCT PROVINCE')) {
+      const provs = [];
+      const seen = new Set();
+      mockDb.insects.forEach(i => {
+        if (i.province && !seen.has(i.province)) {
+          seen.add(i.province);
+          provs.push({ province: i.province, region: i.region || '' });
+        }
+      });
+      return [provs];
+    }
+
+    // ==========================================
+    // INSECTS CRUD
+    // ==========================================
+    if (cleanSql.toUpperCase().includes('INSECTS')) {
+      if (!mockDb.insects) mockDb.insects = [];
+
+      // Check category reference count
+      if (cleanSql.toUpperCase().includes('COUNT(*)') && cleanSql.toUpperCase().includes('CATEGORY_ID = ?')) {
+        const catId = parseInt(params[0]);
+        const count = mockDb.insects.filter(i => i.category_id === catId).length;
+        return [[{ count }]];
+      }
+
+      // SELECT Insects (Catalog / Filter / Single)
+      if (cleanSql.toUpperCase().startsWith('SELECT')) {
+        const matchId = cleanSql.match(/WHERE\s+(?:i\.)?id\s*=\s*\?/i) || cleanSql.match(/WHERE\s+(?:insects\.)?id\s*=\s*\?/i);
+        if (matchId && params.length > 0) {
+          const searchId = parseInt(params[0]);
+          const singleInsect = mockDb.insects.find(ins => ins.id === searchId);
+          return [singleInsect ? [singleInsect] : []];
+        }
+
+        let filtered = [...mockDb.insects];
+
+        // Filter by category if requested
+        if (cleanSql.includes('i.category_id = ?') || cleanSql.includes('category_id = ?')) {
+          const catId = parseInt(params[params.length - 1]);
+          if (!isNaN(catId)) {
+            filtered = filtered.filter(ins => ins.category_id === catId);
+          }
+        }
+
+        // Handle search filter
+        if (params.length > 0) {
+          const searchParam = params[0]?.toString()?.replace(/%/g, '')?.toLowerCase();
+          if (searchParam && cleanSql.includes('LIKE ?')) {
+            filtered = filtered.filter(ins => 
+              (ins.common_name && ins.common_name.toLowerCase().includes(searchParam)) || 
+              (ins.scientific_name && ins.scientific_name.toLowerCase().includes(searchParam)) ||
+              (ins.habitat && ins.habitat.toLowerCase().includes(searchParam)) ||
+              (ins.province && ins.province.toLowerCase().includes(searchParam)) ||
+              (ins.region && ins.region.toLowerCase().includes(searchParam))
+            );
+          }
+        }
+
+        filtered.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        return [filtered];
+      }
+
+      // INSERT INTO Insects
+      if (cleanSql.toUpperCase().startsWith('INSERT INTO')) {
+        const [
+          category_id, common_name, scientific_name, description, habitat, status, image_url,
+          kingdom, phylum, class_name, family, genus, species,
+          mouth_type, wing_type, leg_type, antenna_type, region, province, source
+        ] = params;
+
         const cat = mockDb.categories.find(c => c.id === parseInt(category_id));
-        mockDb.insects[insectIdx] = {
-          ...mockDb.insects[insectIdx],
-          category_id: parseInt(category_id),
-          category_name: cat ? cat.name : 'Unknown',
-          common_name,
-          scientific_name,
-          description,
-          habitat,
-          status,
-          image_url,
+        const newId = (mockDb.insects.length > 0 ? Math.max(...mockDb.insects.map(i => i.id || 0)) : 0) + 1;
+        
+        const newInsect = {
+          id: newId,
+          category_id: parseInt(category_id) || 1,
+          category_name: cat ? cat.name : 'Coleoptera (ด้วง)',
+          common_name: common_name || '',
+          scientific_name: scientific_name || '',
+          description: description || '',
+          habitat: habitat || '',
+          status: status || 'common',
+          image_url: image_url || '',
           kingdom: kingdom || 'Animalia',
           phylum: phylum || 'Arthropoda',
           class_name: class_name || 'Insecta',
@@ -184,122 +291,121 @@ const db = {
           region: region || '',
           province: province || '',
           source: source || '',
+          created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
-        return [{ affectedRows: 1 }];
-      }
-      return [{ affectedRows: 0 }];
-    }
-
-    // 6. DELETE FROM insects
-    if (cleanSql.toUpperCase().startsWith('DELETE FROM INSECTS')) {
-      const deleteId = parseInt(params[0]);
-      const initialLength = mockDb.insects.length;
-      const filtered = mockDb.insects.filter(ins => ins.id !== deleteId);
-      
-      if (filtered.length < initialLength) {
-        // Mutate array
-        mockDb.insects.length = 0;
-        mockDb.insects.push(...filtered);
-        return [{ affectedRows: 1 }];
-      }
-      return [{ affectedRows: 0 }];
-    }
-
-    // 7. CREATE TABLE IF NOT EXISTS contact_us
-    if (cleanSql.toUpperCase().includes('CREATE TABLE IF NOT EXISTS CONTACT_US')) {
-      return [{ affectedRows: 0 }];
-    }
-
-    // 8. SELECT FROM contact_us
-    if (cleanSql.toUpperCase().includes('SELECT') && cleanSql.toUpperCase().includes('FROM CONTACT_US')) {
-      if (!mockDb.contact_us) {
-        mockDb.contact_us = [];
-      }
-      
-      const matchId = cleanSql.match(/WHERE\s+id\s*=\s*\?/i);
-      if (matchId && params.length > 0) {
-        const searchId = parseInt(params[0]);
-        const singleItem = mockDb.contact_us.find(c => c.id === searchId);
-        return [singleItem ? [singleItem] : []];
+        
+        mockDb.insects.unshift(newInsect);
+        return [{ insertId: newId, affectedRows: 1 }];
       }
 
-      let filtered = [...mockDb.contact_us];
-      if (params.length > 0 && params[0]) {
-        const searchTerm = params[0].toString().replace(/%/g, '').toLowerCase();
-        if (searchTerm) {
-          filtered = filtered.filter(c => 
-            (c.first_name && c.first_name.toLowerCase().includes(searchTerm)) ||
-            (c.last_name && c.last_name.toLowerCase().includes(searchTerm)) ||
-            (c.address && c.address.toLowerCase().includes(searchTerm)) ||
-            (c.phone && c.phone.toLowerCase().includes(searchTerm)) ||
-            (c.comment && c.comment.toLowerCase().includes(searchTerm))
-          );
+      // UPDATE Insects
+      if (cleanSql.toUpperCase().startsWith('UPDATE')) {
+        const [
+          category_id, common_name, scientific_name, description, habitat, status, image_url,
+          kingdom, phylum, class_name, family, genus, species,
+          mouth_type, wing_type, leg_type, antenna_type, region, province, source, id
+        ] = params;
+        const insectIdx = mockDb.insects.findIndex(ins => ins.id === parseInt(id));
+        
+        if (insectIdx !== -1) {
+          const cat = mockDb.categories.find(c => c.id === parseInt(category_id));
+          mockDb.insects[insectIdx] = {
+            ...mockDb.insects[insectIdx],
+            category_id: parseInt(category_id) || mockDb.insects[insectIdx].category_id,
+            category_name: cat ? cat.name : mockDb.insects[insectIdx].category_name,
+            common_name: common_name || mockDb.insects[insectIdx].common_name,
+            scientific_name: scientific_name || mockDb.insects[insectIdx].scientific_name,
+            description: description !== undefined ? description : mockDb.insects[insectIdx].description,
+            habitat: habitat !== undefined ? habitat : mockDb.insects[insectIdx].habitat,
+            status: status || mockDb.insects[insectIdx].status,
+            image_url: image_url !== undefined ? image_url : mockDb.insects[insectIdx].image_url,
+            kingdom: kingdom || mockDb.insects[insectIdx].kingdom,
+            phylum: phylum || mockDb.insects[insectIdx].phylum,
+            class_name: class_name || mockDb.insects[insectIdx].class_name,
+            family: family !== undefined ? family : mockDb.insects[insectIdx].family,
+            genus: genus || mockDb.insects[insectIdx].genus,
+            species: species || mockDb.insects[insectIdx].species,
+            mouth_type: mouth_type !== undefined ? mouth_type : mockDb.insects[insectIdx].mouth_type,
+            wing_type: wing_type !== undefined ? wing_type : mockDb.insects[insectIdx].wing_type,
+            leg_type: leg_type !== undefined ? leg_type : mockDb.insects[insectIdx].leg_type,
+            antenna_type: antenna_type !== undefined ? antenna_type : mockDb.insects[insectIdx].antenna_type,
+            region: region !== undefined ? region : mockDb.insects[insectIdx].region,
+            province: province !== undefined ? province : mockDb.insects[insectIdx].province,
+            source: source !== undefined ? source : mockDb.insects[insectIdx].source,
+            updated_at: new Date().toISOString()
+          };
+          return [{ affectedRows: 1 }];
         }
+        return [{ affectedRows: 0 }];
       }
 
-      filtered.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-      return [filtered];
+      // DELETE FROM Insects
+      if (cleanSql.toUpperCase().startsWith('DELETE FROM')) {
+        const deleteId = parseInt(params[0]);
+        const idx = mockDb.insects.findIndex(ins => ins.id === deleteId);
+        if (idx !== -1) {
+          mockDb.insects.splice(idx, 1);
+          return [{ affectedRows: 1 }];
+        }
+        return [{ affectedRows: 0 }];
+      }
     }
 
-    // 9. INSERT INTO contact_us
-    if (cleanSql.toUpperCase().startsWith('INSERT INTO CONTACT_US')) {
-      if (!mockDb.contact_us) {
-        mockDb.contact_us = [];
-      }
-      const [first_name, last_name, address, phone, comment] = params;
-      const newId = mockDb.contact_us.reduce((max, c) => c.id > max ? c.id : max, 0) + 1;
-      const newContact = {
-        id: newId,
-        first_name: first_name || '',
-        last_name: last_name || '',
-        address: address || '',
-        phone: phone || '',
-        comment: comment || '',
-        created_at: new Date().toISOString()
-      };
-      mockDb.contact_us.push(newContact);
-      return [{ insertId: newId, affectedRows: 1 }];
-    }
-
-    // 10. UPDATE contact_us
-    if (cleanSql.toUpperCase().startsWith('UPDATE CONTACT_US')) {
-      if (!mockDb.contact_us) {
-        mockDb.contact_us = [];
-      }
-      const [first_name, last_name, address, phone, comment, id] = params;
-      const idx = mockDb.contact_us.findIndex(c => c.id === parseInt(id));
-      if (idx !== -1) {
-        mockDb.contact_us[idx] = {
-          ...mockDb.contact_us[idx],
+    // ==========================================
+    // CONTACT_US CRUD
+    // ==========================================
+    if (cleanSql.toUpperCase().includes('CONTACT_US')) {
+      if (!mockDb.contact_us) mockDb.contact_us = [];
+      
+      if (cleanSql.toUpperCase().startsWith('INSERT INTO')) {
+        const [first_name, last_name, address, phone, comment] = params;
+        const newId = (mockDb.contact_us.length > 0 ? Math.max(...mockDb.contact_us.map(c => c.id || 0)) : 0) + 1;
+        const newContact = {
+          id: newId,
           first_name: first_name || '',
           last_name: last_name || '',
           address: address || '',
           phone: phone || '',
-          comment: comment || ''
+          comment: comment || '',
+          created_at: new Date().toISOString()
         };
-        return [{ affectedRows: 1 }];
+        mockDb.contact_us.unshift(newContact);
+        return [{ insertId: newId, affectedRows: 1 }];
       }
-      return [{ affectedRows: 0 }];
+
+      if (cleanSql.toUpperCase().startsWith('UPDATE')) {
+        const [first_name, last_name, address, phone, comment, id] = params;
+        const idx = mockDb.contact_us.findIndex(c => c.id === parseInt(id));
+        if (idx !== -1) {
+          mockDb.contact_us[idx] = {
+            ...mockDb.contact_us[idx],
+            first_name: first_name || mockDb.contact_us[idx].first_name,
+            last_name: last_name || mockDb.contact_us[idx].last_name,
+            address: address !== undefined ? address : mockDb.contact_us[idx].address,
+            phone: phone !== undefined ? phone : mockDb.contact_us[idx].phone,
+            comment: comment || mockDb.contact_us[idx].comment
+          };
+          return [{ affectedRows: 1 }];
+        }
+        return [{ affectedRows: 0 }];
+      }
+
+      if (cleanSql.toUpperCase().startsWith('DELETE FROM')) {
+        const deleteId = parseInt(params[0]);
+        const idx = mockDb.contact_us.findIndex(c => c.id === deleteId);
+        if (idx !== -1) {
+          mockDb.contact_us.splice(idx, 1);
+          return [{ affectedRows: 1 }];
+        }
+        return [{ affectedRows: 0 }];
+      }
+
+      return [mockDb.contact_us];
     }
 
-    // 11. DELETE FROM contact_us
-    if (cleanSql.toUpperCase().startsWith('DELETE FROM CONTACT_US')) {
-      if (!mockDb.contact_us) {
-        mockDb.contact_us = [];
-      }
-      const deleteId = parseInt(params[0]);
-      const initialLength = mockDb.contact_us.length;
-      const filtered = mockDb.contact_us.filter(c => c.id !== deleteId);
-      if (filtered.length < initialLength) {
-        mockDb.contact_us.length = 0;
-        mockDb.contact_us.push(...filtered);
-        return [{ affectedRows: 1 }];
-      }
-      return [{ affectedRows: 0 }];
-    }
-
-    throw new Error(`Mock DB: Unsupported SQL query: ${cleanSql}`);
+    // Fallback safe return
+    return [{ insertId: 0, affectedRows: 1 }];
   }
 };
 
