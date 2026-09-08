@@ -343,15 +343,15 @@ export default function InsectDetailsPage() {
           </tr>
           <tr>
             <th>วงศ์ (Family)</th>
-            <td>${insect.family || (insect.scientific_name.split(' ')[0] + 'idae')}</td>
+            <td>${insect.family || (insect.scientific_name ? insect.scientific_name.split(' ')[0] + 'idae' : '-')}</td>
           </tr>
           <tr>
             <th>สกุล (Genus)</th>
-            <td><em>${insect.genus || insect.scientific_name.split(' ')[0]}</em></td>
+            <td><em>${insect.genus || (insect.scientific_name ? insect.scientific_name.split(' ')[0] : '-')}</em></td>
           </tr>
           <tr>
             <th>ชนิดพันธุ์ (Species)</th>
-            <td><em>${insect.species || insect.scientific_name}</em></td>
+            <td><em>${insect.species || insect.scientific_name || '-'}</em></td>
           </tr>
           <tr>
             <th>ถิ่นอาศัย / เขตนิเวศวิทยา (Habitat)</th>
@@ -684,15 +684,15 @@ export default function InsectDetailsPage() {
                         </tr>
                         <tr className="bg-surface-container-low hover:bg-surface-container-high transition-colors">
                           <td className="p-4 text-secondary font-label-caps text-[11px]">วงศ์ (FAMILY)</td>
-                          <td className="p-4 font-bold text-on-surface">{insect.family || (insect.scientific_name.split(' ')[0] + 'idae')}</td>
+                          <td className="p-4 font-bold text-on-surface">{insect.family || (insect.scientific_name ? insect.scientific_name.split(' ')[0] + 'idae' : '-')}</td>
                         </tr>
                         <tr className="bg-white hover:bg-surface-container-high transition-colors">
                           <td className="p-4 text-secondary font-label-caps text-[11px]">สกุล (GENUS)</td>
-                          <td className="p-4 font-bold text-on-surface italic">{insect.genus || insect.scientific_name.split(' ')[0]}</td>
+                          <td className="p-4 font-bold text-on-surface italic">{insect.genus || (insect.scientific_name ? insect.scientific_name.split(' ')[0] : '-')}</td>
                         </tr>
                         <tr className="bg-surface-container-low hover:bg-surface-container-high transition-colors">
                           <td className="p-4 text-secondary font-label-caps text-[11px]">ชนิดพันธุ์ (SPECIES)</td>
-                          <td className="p-4 font-bold text-on-surface italic">{insect.species || insect.scientific_name}</td>
+                          <td className="p-4 font-bold text-on-surface italic">{insect.species || insect.scientific_name || '-'}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -740,7 +740,7 @@ export default function InsectDetailsPage() {
                       </tr>
                       <tr className="bg-white">
                         <td className="p-3.5 text-secondary font-label-caps text-[10px]">สกุล (GENUS)</td>
-                        <td className="p-3.5 font-bold text-on-surface italic">{insect.scientific_name.split(' ')[0]}</td>
+                        <td className="p-3.5 font-bold text-on-surface italic">{insect.genus || (insect.scientific_name ? insect.scientific_name.split(' ')[0] : '-')}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,14 +1,16 @@
 import mysql from 'mysql2/promise';
 import * as mockDb from './mockData';
 
+const isTiDB = process.env.DB_HOST?.includes('tidbcloud.com') || process.env.DB_PORT === '4000';
+
 // Connection configuration using environment variables
 const config = {
   host: process.env.DB_HOST || '127.0.0.1',
   user: process.env.DB_USER !== undefined ? process.env.DB_USER : 'root',
   password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : '',
   database: process.env.DB_DATABASE || 'insect_db',
-  port: parseInt(process.env.DB_PORT || '3306'),
-  ssl: (process.env.DB_SSL === 'true' || process.env.DB_HOST?.includes('aivencloud.com') || process.env.DB_HOST?.includes('tidbcloud.com')) ? { rejectUnauthorized: false } : undefined,
+  port: parseInt(process.env.DB_PORT || (isTiDB ? '4000' : '3306')),
+  ssl: (process.env.DB_SSL === 'true' || isTiDB || process.env.DB_HOST?.includes('aivencloud.com')) ? { minVersion: 'TLSv1.2', rejectUnauthorized: false } : undefined,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
