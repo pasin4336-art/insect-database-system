@@ -13,7 +13,8 @@ const config = {
   ssl: (process.env.DB_SSL === 'true' || isTiDB || process.env.DB_HOST?.includes('aivencloud.com')) ? { minVersion: 'TLSv1.2', rejectUnauthorized: false } : undefined,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  flags: '+FOUND_ROWS'
 };
 
 let pool;

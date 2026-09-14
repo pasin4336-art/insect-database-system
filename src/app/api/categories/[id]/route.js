@@ -34,18 +34,19 @@ export async function PUT(request, { params }) {
     `;
     const values = [name, description || '', parseInt(id)];
 
-    const [result] = await pool.query(query, values);
-
-    if (result.affectedRows === 0) {
+    const [existing] = await pool.query('SELECT id FROM categories WHERE id = ? LIMIT 1', [parseInt(id)]);
+    if (!existing || existing.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Category not found or no changes made.' },
+        { success: false, message: 'ไม่พบหมวดหมู่นี้ในระบบ (Category not found)' },
         { status: 404 }
       );
     }
 
+    await pool.query(query, values);
+
     return NextResponse.json({
       success: true,
-      message: 'Category updated successfully.'
+      message: 'อัปเดตข้อมูลหมวดหมู่เรียบร้อยแล้ว'
     });
   } catch (error) {
     console.error('Database Error:', error);

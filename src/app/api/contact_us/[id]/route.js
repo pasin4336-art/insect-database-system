@@ -38,14 +38,15 @@ export async function PUT(request, { params }) {
       id
     ];
 
-    const [result] = await pool.query(updateQuery, values);
-
-    if (result.affectedRows === 0) {
+    const [existing] = await pool.query('SELECT id FROM contact_us WHERE id = ? LIMIT 1', [parseInt(id)]);
+    if (!existing || existing.length === 0) {
       return NextResponse.json(
         { success: false, message: 'ไม่พบรายการข้อมูลติดต่อที่ต้องการอัปเดต' },
         { status: 404 }
       );
     }
+
+    await pool.query(updateQuery, values);
 
     return NextResponse.json({
       success: true,

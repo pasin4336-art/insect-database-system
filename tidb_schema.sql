@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS insects (
   description text DEFAULT NULL,
   habitat varchar(255) DEFAULT NULL,
   status enum('common','vulnerable','endangered','protected') DEFAULT 'common',
-  image_url varchar(255) DEFAULT NULL,
+  image_url longtext DEFAULT NULL,
   created_at timestamp NOT NULL DEFAULT current_timestamp(),
   updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   kingdom varchar(100) DEFAULT 'Animalia',

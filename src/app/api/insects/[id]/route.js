@@ -117,18 +117,20 @@ export async function PUT(request, { params }) {
       parseInt(id)
     ];
 
-    const [result] = await pool.query(query, values);
-
-    if (result.affectedRows === 0) {
+    // Check if specimen exists
+    const [existing] = await pool.query('SELECT id FROM insects WHERE id = ? LIMIT 1', [parseInt(id)]);
+    if (!existing || existing.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Insect specimen not found or no changes made.' },
+        { success: false, message: 'ไม่พบข้อมูลแมลงที่ต้องการแก้ไข (Insect specimen not found)' },
         { status: 404 }
       );
     }
 
+    await pool.query(query, values);
+
     return NextResponse.json({
       success: true,
-      message: 'Insect record updated successfully.'
+      message: 'บันทึกการแก้ไขข้อมูลตัวอย่างแมลงเรียบร้อยแล้ว'
     });
   } catch (error) {
     console.error('Database Error:', error);
