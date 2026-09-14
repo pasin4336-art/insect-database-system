@@ -547,7 +547,10 @@ export default function ThailandMapLibre({
       const regColor = theme.color;
 
       // Find insects in this province for quick preview
-      const provinceInsects = (insects || []).filter(ins => ins.province === prov.name);
+      const provinceInsects = (insects || []).filter(ins => {
+        if (!ins.province) return false;
+        return ins.province.replace(/จังหวัด/g, '').includes(prov.name);
+      });
 
       const el = document.createElement('div');
       el.className = 'maplibre-insect-pin cursor-pointer transition-all duration-200';
