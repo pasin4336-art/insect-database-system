@@ -27,6 +27,16 @@ async function ensureTaxonomyColumns() {
       // Column already exists or error ignored
     }
   }
+
+  // Ensure fields that can hold large data (e.g. Base64 images or long text) have sufficient capacity
+  try {
+    await pool.query('ALTER TABLE insects MODIFY COLUMN image_url LONGTEXT');
+    await pool.query('ALTER TABLE insects MODIFY COLUMN description LONGTEXT');
+    await pool.query('ALTER TABLE insects MODIFY COLUMN source TEXT');
+    await pool.query('ALTER TABLE insects MODIFY COLUMN province TEXT');
+  } catch (e) {
+    // Column modify error ignored
+  }
 }
 
 let columnsChecked = false;

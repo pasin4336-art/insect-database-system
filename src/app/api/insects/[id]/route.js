@@ -82,6 +82,12 @@ export async function PUT(request, { params }) {
       );
     }
 
+    try {
+      await pool.query('ALTER TABLE insects MODIFY COLUMN image_url LONGTEXT');
+    } catch (e) {
+      // Ignored
+    }
+
     const derivedGenus = genus || (scientific_name ? scientific_name.split(' ')[0] : '');
     const derivedSpecies = species || scientific_name || '';
 
