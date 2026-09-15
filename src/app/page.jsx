@@ -205,21 +205,44 @@ function CatalogContent() {
     return Array.from(new Set(THAI_REGIONS.flatMap(r => r.provinces)));
   }, [activeRegionObj]);
 
-  // Specimen counts
+  // Accurate specimen counts per individual province
   const provinceCounts = useMemo(() => {
-    return allInsects.reduce((acc, ins) => {
-      if (ins.province) {
-        acc[ins.province] = (acc[ins.province] || 0) + 1;
-      }
-      return acc;
-    }, {});
+    const counts = {};
+    const allProvs = THAI_REGIONS.flatMap(r => r.provinces);
+    
+    allProvs.forEach(provName => {
+      counts[provName] = 0;
+    });
+
+    allInsects.forEach(ins => {
+      if (!ins.province) return;
+      const provStr = ins.province.toLowerCase();
+      
+      allProvs.forEach(provName => {
+        if (provStr.includes(provName.toLowerCase())) {
+          counts[provName] = (counts[provName] || 0) + 1;
+        }
+      });
+    });
+
+    return counts;
   }, [allInsects]);
 
+  // Accurate specimen counts per region
   const regionCounts = useMemo(() => {
-    return THAI_REGIONS.reduce((acc, reg) => {
-      acc[reg.name] = allInsects.filter(ins => ins.region === reg.name || ins.region === reg.alias).length;
-      return acc;
-    }, {});
+    const counts = {};
+    THAI_REGIONS.forEach(reg => {
+      counts[reg.name] = allInsects.filter(ins => {
+        const regStr = (ins.region || '').toLowerCase();
+        const provStr = (ins.province || '').toLowerCase();
+        
+        if (regStr.includes(reg.name.toLowerCase()) || (reg.alias && regStr.includes(reg.alias.toLowerCase()))) {
+          return true;
+        }
+        return reg.provinces.some(p => provStr.includes(p.toLowerCase()));
+      }).length;
+    });
+    return counts;
   }, [allInsects]);
 
   // Filter provinces by search and tab
@@ -227,7 +250,7 @@ function CatalogContent() {
     const matchesSearch = !provinceSearchQuery.trim() || p.toLowerCase().includes(provinceSearchQuery.trim().toLowerCase());
     if (!matchesSearch) return false;
     if (provinceFilterTab === 'has_data') {
-      return (provinceCounts[p] || 0) > 0 || dbProvinces.some(dp => dp.province === p);
+      return (provinceCounts[p] || 0) > 0;
     }
     return true;
   });

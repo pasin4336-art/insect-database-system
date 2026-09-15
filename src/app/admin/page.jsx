@@ -8,13 +8,43 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import InsectImage from '@/components/InsectImage';
 
-const AVAILABLE_REGIONS = [
-  { name: 'ภาคเหนือ', alias: 'ภาคเหนือ', color: '#006948', icon: 'filter_hdr' },
-  { name: 'ภาคตะวันออกเฉียงเหนือ', alias: 'ภาคอีสาน', color: '#d97706', icon: 'landscape' },
-  { name: 'ภาคกลาง', alias: 'ภาคกลาง', color: '#10b981', icon: 'location_city' },
-  { name: 'ภาคตะวันออก', alias: 'ภาคตะวันออก', color: '#06b6d4', icon: 'beach_access' },
-  { name: 'ภาคตะวันตก', alias: 'ภาคตะวันตก', color: '#8b5cf6', icon: 'forest' },
-  { name: 'ภาคใต้', alias: 'ภาคใต้', color: '#3b82f6', icon: 'surfing' }
+const ADMIN_REGIONS = [
+  { 
+    name: 'ภาคเหนือ', 
+    alias: 'ภาคเหนือ',
+    color: '#006948',
+    provinces: ['เชียงใหม่', 'เชียงราย', 'แม่ฮ่องสอน', 'ลำปาง', 'ลำพูน', 'น่าน', 'พะเยา', 'แพร่', 'อุตรดิตถ์'] 
+  },
+  { 
+    name: 'ภาคตะวันออกเฉียงเหนือ', 
+    alias: 'ภาคอีสาน',
+    color: '#f59e0b',
+    provinces: ['ขอนแก่น', 'กาฬสินธุ์', 'ชัยภูมิ', 'นครพนม', 'นครราชสีมา', 'บึงกาฬ', 'บุรีรัมย์', 'มหาสารคาม', 'มุกดาหาร', 'ยโสธร', 'ร้อยเอ็ด', 'เลย', 'ศรีสะเกษ', 'สกลนคร', 'สุรินทร์', 'หนองคาย', 'หนองบัวลำภู', 'อุดรธานี', 'อุบลราชธานี', 'อำนาจเจริญ'] 
+  },
+  { 
+    name: 'ภาคกลาง', 
+    alias: 'ภาคกลาง',
+    color: '#10b981',
+    provinces: ['กรุงเทพมหานคร', 'กำแพงเพชร', 'ชัยนาท', 'นครนายก', 'นครปฐม', 'นครสวรรค์', 'นนทบุรี', 'ปทุมธานี', 'พระนครศรีอยุธยา', 'พิจิตร', 'พิษณุโลก', 'เพชรบูรณ์', 'ลพบุรี', 'สมุทรปราการ', 'สมุทรสงคราม', 'สมุทรสาคร', 'สระบุรี', 'สิงห์บุรี', 'สุโขทัย', 'สุพรรณบุรี', 'อ่างทอง', 'อุทัยธานี'] 
+  },
+  { 
+    name: 'ภาคตะวันออก', 
+    alias: 'ภาคตะวันออก',
+    color: '#06b6d4',
+    provinces: ['จันทบุรี', 'ฉะเชิงเทรา', 'ชลบุรี', 'ตราด', 'ปราจีนบุรี', 'ระยอง', 'สระแก้ว'] 
+  },
+  { 
+    name: 'ภาคตะวันตก', 
+    alias: 'ภาคตะวันตก',
+    color: '#8b5cf6',
+    provinces: ['กาญจนบุรี', 'ตาก', 'ประจวบคีรีขันธ์', 'เพชรบุรี', 'ราชบุรี'] 
+  },
+  { 
+    name: 'ภาคใต้', 
+    alias: 'ภาคใต้',
+    color: '#3b82f6',
+    provinces: ['กระบี่', 'ชุมพร', 'ตรัง', 'นครศรีธรรมราช', 'นราธิวาส', 'ปัตตานี', 'พังงา', 'พัทลุง', 'ภูเก็ต', 'ยะลา', 'ระนอง', 'สงขลา', 'สตูล', 'สุราษฎร์ธานี'] 
+  }
 ];
 
 function AdminDashboardContent() {
@@ -62,30 +92,39 @@ function AdminDashboardContent() {
   const [province, setProvince] = useState('');
   const [source, setSource] = useState('');
 
-  // Multi-Region helper handlers
-  const toggleRegion = (regName) => {
-    const currentList = region ? region.split(',').map(r => r.trim()).filter(Boolean) : [];
-    const exists = currentList.some(r => r === regName || r.includes(regName) || regName.includes(r));
-    let updated;
-    if (exists) {
-      updated = currentList.filter(r => r !== regName && !r.includes(regName) && !regName.includes(r));
-    } else {
-      updated = [...currentList, regName];
-    }
-    setRegion(updated.join(', '));
-  };
-
+  // Regional Toggle Helpers
   const isRegionSelected = (regName) => {
     if (!region) return false;
-    return region.includes(regName);
+    const parts = region.split(/[,،]+/).map(s => s.trim().toLowerCase());
+    return parts.includes(regName.toLowerCase());
+  };
+
+  const toggleRegion = (regName) => {
+    let current = region ? region.split(/[,،]+/).map(s => s.trim()).filter(Boolean) : [];
+    if (current.some(r => r.toLowerCase() === regName.toLowerCase())) {
+      current = current.filter(r => r.toLowerCase() !== regName.toLowerCase());
+    } else {
+      current.push(regName);
+    }
+    setRegion(current.join(', '));
   };
 
   const selectAllRegions = () => {
-    setRegion(AVAILABLE_REGIONS.map(r => r.name).join(', '));
+    setRegion(ADMIN_REGIONS.map(r => r.name).join(', '));
   };
 
-  const clearAllRegions = () => {
+  const clearRegions = () => {
     setRegion('');
+  };
+
+  const toggleProvincePill = (provName) => {
+    let current = province ? province.split(/[,،\s]+/).map(s => s.replace(/^จังหวัด/, '').trim()).filter(Boolean) : [];
+    if (current.includes(provName)) {
+      current = current.filter(p => p !== provName);
+    } else {
+      current.push(provName);
+    }
+    setProvince(current.join(', '));
   };
 
   // Category Form State
@@ -1533,7 +1572,7 @@ function AdminDashboardContent() {
                   </div>
 
                   {/* Geographical Region & Origin Section */}
-                  <div className="border border-outline-variant/80 rounded-xl p-4 bg-surface-container-low/50 space-y-4">
+                  <div className="border border-outline-variant/80 rounded-xl p-4 bg-surface-container-low/50 space-y-3">
                     <div className="flex items-center justify-between border-b border-outline-variant/60 pb-2">
                       <h4 className="font-label-caps text-label-caps font-bold text-primary flex items-center gap-1.5">
                         <span className="material-symbols-outlined text-[18px]">map</span>
@@ -1543,75 +1582,62 @@ function AdminDashboardContent() {
                         <button
                           type="button"
                           onClick={selectAllRegions}
-                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                          className="text-[11px] font-bold text-primary hover:underline px-2 py-0.5 rounded hover:bg-primary/10 transition-colors"
                         >
                           เลือกทุกภาค
                         </button>
                         <span className="text-outline-variant">|</span>
                         <button
                           type="button"
-                          onClick={clearAllRegions}
-                          className="text-[11px] font-semibold text-error/80 hover:underline cursor-pointer"
+                          onClick={clearRegions}
+                          className="text-[11px] font-bold text-red-600 hover:underline px-2 py-0.5 rounded hover:bg-red-50 transition-colors"
                         >
                           ล้างค่า
                         </button>
                       </div>
                     </div>
 
-                    {/* Multi-Region Chip Selector */}
+                    {/* Multi-Region Selection Buttons */}
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase">
-                          ภูมิภาคที่พบ (สามารถเลือกได้มากกว่า 1 ภูมิภาค โดยคลิกเลือก)
-                        </label>
-                        {region && (
-                          <span className="text-[11px] text-primary font-bold">
-                            เลือกแล้ว: {region.split(',').filter(Boolean).length} ภูมิภาค
-                          </span>
-                        )}
-                      </div>
-                      
-                      {/* Region Badges Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                        {AVAILABLE_REGIONS.map((reg) => {
-                          const isSelected = isRegionSelected(reg.name);
+                      <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1.5">
+                        ภูมิภาคที่พบ (สามารถคลิกเลือกได้มากกว่า 1 ภูมิภาค โดยคลิกเลือก)
+                      </label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-2">
+                        {ADMIN_REGIONS.map((reg) => {
+                          const selected = isRegionSelected(reg.name);
                           return (
                             <button
                               key={reg.name}
                               type="button"
                               onClick={() => toggleRegion(reg.name)}
-                              className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                                isSelected
+                              className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all border text-center ${
+                                selected
                                   ? 'bg-primary text-white border-primary shadow-sm ring-2 ring-primary/20'
-                                  : 'bg-white text-secondary hover:bg-slate-50 border-outline-variant hover:border-primary/50'
+                                  : 'bg-white text-on-surface hover:bg-surface-container-high border-outline-variant hover:border-primary/50'
                               }`}
                             >
                               <span className="material-symbols-outlined text-[15px]">
-                                {isSelected ? 'check_circle' : 'add_circle_outline'}
+                                {selected ? 'check_circle' : 'add_circle'}
                               </span>
-                              <span className="truncate">{reg.name}</span>
+                              <span>{reg.name}</span>
                             </button>
                           );
                         })}
                       </div>
 
-                      {/* Combined region preview & manual edit */}
-                      <div className="mt-2.5 flex items-center gap-2 bg-white/70 p-2 rounded-lg border border-outline-variant/60">
-                        <span className="text-[11px] text-secondary font-medium whitespace-nowrap flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px] text-primary">sell</span>
-                          ภูมิภาคที่เลือก:
-                        </span>
+                      {/* Selected Regions summary / manual input */}
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-secondary text-[16px]">sell</span>
                         <input
                           type="text"
-                          className="flex-1 px-2.5 py-1 border border-outline-variant focus:border-primary rounded-md text-xs bg-white outline-none font-medium text-primary"
+                          className="w-full px-3 py-1.5 border border-outline-variant focus:border-primary rounded-lg text-xs bg-white outline-none"
                           value={region}
                           onChange={(e) => setRegion(e.target.value)}
-                          placeholder="เลือกจากปุ่มด้านบน หรือพิมพ์เพิ่มเติมคั่นด้วยเครื่องหมายจุลภาค (,)"
+                          placeholder="ภูมิภาคที่เลือก: เลือกจากปุ่มด้านบน หรือพิมพ์เพิ่มเติมคั่นด้วยเครื่องหมายจุลภาค (,)"
                         />
                       </div>
                     </div>
 
-                    {/* Province & Source */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                       <div>
                         <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
@@ -1624,6 +1650,33 @@ function AdminDashboardContent() {
                           onChange={(e) => setProvince(e.target.value)}
                           placeholder="เช่น เชียงใหม่, น่าน, เชียงราย, ขอนแก่น"
                         />
+                        {/* Quick Province suggestions from selected regions */}
+                        {region && (
+                          <div className="mt-2 p-2 bg-white/80 border border-outline-variant/40 rounded-lg">
+                            <span className="text-[10px] font-bold text-secondary uppercase block mb-1">
+                              คลิกเพื่อเพิ่ม/ลบจังหวัดในภูมิภาคที่เลือก:
+                            </span>
+                            <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1">
+                              {ADMIN_REGIONS.filter(r => isRegionSelected(r.name)).flatMap(r => r.provinces).map(provName => {
+                                const isProvSelected = province && province.includes(provName);
+                                return (
+                                  <button
+                                    key={provName}
+                                    type="button"
+                                    onClick={() => toggleProvincePill(provName)}
+                                    className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
+                                      isProvSelected
+                                        ? 'bg-primary/15 border-primary text-primary font-bold'
+                                        : 'bg-surface-container border-outline-variant/60 text-secondary hover:border-primary/40'
+                                    }`}
+                                  >
+                                    {isProvSelected ? `✓ ${provName}` : `+ ${provName}`}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div>
                         <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">

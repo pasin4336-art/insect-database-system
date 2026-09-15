@@ -112,16 +112,17 @@ export async function GET(request) {
       queryParams.push(`%${habitat}%`);
     }
 
-    // Filter by region (supports single or multi-region entries)
+    // Filter by region
     if (region) {
-      query += ` AND i.region LIKE ?`;
-      queryParams.push(`%${region}%`);
+      query += ` AND (i.region LIKE ? OR i.province LIKE ?)`;
+      queryParams.push(`%${region}%`, `%${region}%`);
     }
 
     // Filter by province
     if (province) {
-      query += ` AND i.province LIKE ?`;
-      queryParams.push(`%${province}%`);
+      const cleanProv = province.replace(/^จังหวัด/, '').trim();
+      query += ` AND (i.province LIKE ? OR i.province LIKE ?)`;
+      queryParams.push(`%${cleanProv}%`, `%จังหวัด${cleanProv}%`);
     }
 
     query += ` ORDER BY i.created_at DESC`;
