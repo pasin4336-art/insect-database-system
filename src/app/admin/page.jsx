@@ -1638,58 +1638,59 @@ function AdminDashboardContent() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                      <div>
-                        <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
-                          ชื่อจังหวัดที่พบ (พิมพ์เอง / ระบุหลายจังหวัดคั่นด้วยจุลภาค)
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
-                          value={province}
-                          onChange={(e) => setProvince(e.target.value)}
-                          placeholder="เช่น เชียงใหม่, น่าน, เชียงราย, ขอนแก่น"
-                        />
-                        {/* Quick Province suggestions from selected regions */}
-                        {region && (
-                          <div className="mt-2 p-2 bg-white/80 border border-outline-variant/40 rounded-lg">
-                            <span className="text-[10px] font-bold text-secondary uppercase block mb-1">
-                              คลิกเพื่อเพิ่ม/ลบจังหวัดในภูมิภาคที่เลือก:
-                            </span>
-                            <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1">
-                              {ADMIN_REGIONS.filter(r => isRegionSelected(r.name)).flatMap(r => r.provinces).map(provName => {
-                                const isProvSelected = province && province.includes(provName);
-                                return (
-                                  <button
-                                    key={provName}
-                                    type="button"
-                                    onClick={() => toggleProvincePill(provName)}
-                                    className={`text-[11px] px-2 py-0.5 rounded-full border transition-all ${
-                                      isProvSelected
-                                        ? 'bg-primary/15 border-primary text-primary font-bold'
-                                        : 'bg-surface-container border-outline-variant/60 text-secondary hover:border-primary/40'
-                                    }`}
-                                  >
-                                    {isProvSelected ? `✓ ${provName}` : `+ ${provName}`}
-                                  </button>
-                                );
-                              })}
-                            </div>
+                    {/* Province field */}
+                    <div className="pt-1">
+                      <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
+                        ชื่อจังหวัดที่พบ (พิมพ์เอง / ระบุหลายจังหวัดคั่นด้วยจุลภาค)
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
+                        value={province}
+                        onChange={(e) => setProvince(e.target.value)}
+                        placeholder="เช่น เชียงใหม่, น่าน, เชียงราย, ขอนแก่น"
+                      />
+                      {/* Quick Province suggestions from selected regions */}
+                      {region && (
+                        <div className="mt-2 p-2.5 bg-white/90 border border-outline-variant/50 rounded-lg">
+                          <span className="text-[10px] font-bold text-secondary uppercase block mb-1.5">
+                            คลิกเพื่อเพิ่ม/ลบจังหวัดในภูมิภาคที่เลือก:
+                          </span>
+                          <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1">
+                            {ADMIN_REGIONS.filter(r => isRegionSelected(r.name)).flatMap(r => r.provinces).map(provName => {
+                              const isProvSelected = province && province.includes(provName);
+                              return (
+                                <button
+                                  key={provName}
+                                  type="button"
+                                  onClick={() => toggleProvincePill(provName)}
+                                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-all ${
+                                    isProvSelected
+                                      ? 'bg-primary/15 border-primary text-primary font-bold'
+                                      : 'bg-surface-container border-outline-variant/60 text-secondary hover:border-primary/40'
+                                  }`}
+                                >
+                                  {isProvSelected ? `✓ ${provName}` : `+ ${provName}`}
+                                </button>
+                              );
+                            })}
                           </div>
-                        )}
-                      </div>
-                      <div>
-                        <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
-                          แหล่งที่มาของข้อมูล (พิมพ์เอง)
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
-                          value={source}
-                          onChange={(e) => setSource(e.target.value)}
-                          placeholder="เช่น สำรวจภาคสนาม, อุทยานแห่งชาติ, ONEP"
-                        />
-                      </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Source / Reference field — Enlarged and full-width */}
+                    <div className="pt-1">
+                      <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
+                        แหล่งที่มาของข้อมูล (พิมพ์เอง / ลิงก์อ้างอิง)
+                      </label>
+                      <textarea
+                        rows={2}
+                        className="w-full px-3 py-2 border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg text-sm bg-white outline-none resize-y transition-all"
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
+                        placeholder="ระบุแหล่งที่มา เช่น สำนักส่งเสริมศิลปวัฒนธรรม มหาวิทยาลัยเชียงใหม่, ฐานข้อมูลความหลากหลายทางชีวภาพ ONEP, เว็บไซต์อ้างอิง..."
+                      />
                     </div>
                   </div>
 
