@@ -112,10 +112,10 @@ export async function GET(request) {
       queryParams.push(`%${habitat}%`);
     }
 
-    // Filter by region
+    // Filter by region (supports single or multi-region entries)
     if (region) {
-      query += ` AND i.region = ?`;
-      queryParams.push(region);
+      query += ` AND i.region LIKE ?`;
+      queryParams.push(`%${region}%`);
     }
 
     // Filter by province

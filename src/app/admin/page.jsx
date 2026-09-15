@@ -8,6 +8,15 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import InsectImage from '@/components/InsectImage';
 
+const AVAILABLE_REGIONS = [
+  { name: 'ภาคเหนือ', alias: 'ภาคเหนือ', color: '#006948', icon: 'filter_hdr' },
+  { name: 'ภาคตะวันออกเฉียงเหนือ', alias: 'ภาคอีสาน', color: '#d97706', icon: 'landscape' },
+  { name: 'ภาคกลาง', alias: 'ภาคกลาง', color: '#10b981', icon: 'location_city' },
+  { name: 'ภาคตะวันออก', alias: 'ภาคตะวันออก', color: '#06b6d4', icon: 'beach_access' },
+  { name: 'ภาคตะวันตก', alias: 'ภาคตะวันตก', color: '#8b5cf6', icon: 'forest' },
+  { name: 'ภาคใต้', alias: 'ภาคใต้', color: '#3b82f6', icon: 'surfing' }
+];
+
 function AdminDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,6 +61,32 @@ function AdminDashboardContent() {
   const [region, setRegion] = useState('');
   const [province, setProvince] = useState('');
   const [source, setSource] = useState('');
+
+  // Multi-Region helper handlers
+  const toggleRegion = (regName) => {
+    const currentList = region ? region.split(',').map(r => r.trim()).filter(Boolean) : [];
+    const exists = currentList.some(r => r === regName || r.includes(regName) || regName.includes(r));
+    let updated;
+    if (exists) {
+      updated = currentList.filter(r => r !== regName && !r.includes(regName) && !regName.includes(r));
+    } else {
+      updated = [...currentList, regName];
+    }
+    setRegion(updated.join(', '));
+  };
+
+  const isRegionSelected = (regName) => {
+    if (!region) return false;
+    return region.includes(regName);
+  };
+
+  const selectAllRegions = () => {
+    setRegion(AVAILABLE_REGIONS.map(r => r.name).join(', '));
+  };
+
+  const clearAllRegions = () => {
+    setRegion('');
+  };
 
   // Category Form State
   const [isCatModalOpen, setIsCatModalOpen] = useState(false);
@@ -1498,52 +1533,108 @@ function AdminDashboardContent() {
                   </div>
 
                   {/* Geographical Region & Origin Section */}
-                  <div className="border border-outline-variant/80 rounded-xl p-4 bg-surface-container-low/50 space-y-3">
-                    <h4 className="font-label-caps text-label-caps font-bold text-primary flex items-center gap-1.5 border-b border-outline-variant/60 pb-2">
-                      <span className="material-symbols-outlined text-[18px]">map</span>
-                      ข้อมูลภูมิภาคและแหล่งที่มา (Geographical Region & Origin)
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
-                          ภูมิภาค (เลือก)
+                  <div className="border border-outline-variant/80 rounded-xl p-4 bg-surface-container-low/50 space-y-4">
+                    <div className="flex items-center justify-between border-b border-outline-variant/60 pb-2">
+                      <h4 className="font-label-caps text-label-caps font-bold text-primary flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-[18px]">map</span>
+                        ข้อมูลภูมิภาคและแหล่งที่มา (Geographical Region & Origin)
+                      </h4>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={selectAllRegions}
+                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
+                        >
+                          เลือกทุกภาค
+                        </button>
+                        <span className="text-outline-variant">|</span>
+                        <button
+                          type="button"
+                          onClick={clearAllRegions}
+                          className="text-[11px] font-semibold text-error/80 hover:underline cursor-pointer"
+                        >
+                          ล้างค่า
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Multi-Region Chip Selector */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase">
+                          ภูมิภาคที่พบ (สามารถเลือกได้มากกว่า 1 ภูมิภาค โดยคลิกเลือก)
                         </label>
-                        <select
-                          className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
+                        {region && (
+                          <span className="text-[11px] text-primary font-bold">
+                            เลือกแล้ว: {region.split(',').filter(Boolean).length} ภูมิภาค
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Region Badges Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                        {AVAILABLE_REGIONS.map((reg) => {
+                          const isSelected = isRegionSelected(reg.name);
+                          return (
+                            <button
+                              key={reg.name}
+                              type="button"
+                              onClick={() => toggleRegion(reg.name)}
+                              className={`px-2.5 py-2 rounded-lg text-xs font-semibold border flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-primary text-white border-primary shadow-sm ring-2 ring-primary/20'
+                                  : 'bg-white text-secondary hover:bg-slate-50 border-outline-variant hover:border-primary/50'
+                              }`}
+                            >
+                              <span className="material-symbols-outlined text-[15px]">
+                                {isSelected ? 'check_circle' : 'add_circle_outline'}
+                              </span>
+                              <span className="truncate">{reg.name}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Combined region preview & manual edit */}
+                      <div className="mt-2.5 flex items-center gap-2 bg-white/70 p-2 rounded-lg border border-outline-variant/60">
+                        <span className="text-[11px] text-secondary font-medium whitespace-nowrap flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px] text-primary">sell</span>
+                          ภูมิภาคที่เลือก:
+                        </span>
+                        <input
+                          type="text"
+                          className="flex-1 px-2.5 py-1 border border-outline-variant focus:border-primary rounded-md text-xs bg-white outline-none font-medium text-primary"
                           value={region}
                           onChange={(e) => setRegion(e.target.value)}
-                        >
-                          <option value="">-- เลือกภูมิภาค --</option>
-                          <option value="ภาคเหนือ">ภาคเหนือ</option>
-                          <option value="ภาคตะวันออกเฉียงเหนือ">ภาคตะวันออกเฉียงเหนือ (ภาคอีสาน)</option>
-                          <option value="ภาคกลาง">ภาคกลาง</option>
-                          <option value="ภาคตะวันออก">ภาคตะวันออก</option>
-                          <option value="ภาคตะวันตก">ภาคตะวันตก</option>
-                          <option value="ภาคใต้">ภาคใต้</option>
-                        </select>
+                          placeholder="เลือกจากปุ่มด้านบน หรือพิมพ์เพิ่มเติมคั่นด้วยเครื่องหมายจุลภาค (,)"
+                        />
                       </div>
+                    </div>
+
+                    {/* Province & Source */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                       <div>
                         <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
-                          ชื่อจังหวัด (พิมพ์เอง)
+                          ชื่อจังหวัดที่พบ (พิมพ์เอง / ระบุหลายจังหวัดคั่นด้วยจุลภาค)
                         </label>
                         <input
                           type="text"
                           className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
                           value={province}
                           onChange={(e) => setProvince(e.target.value)}
-                          placeholder="เช่น เชียงใหม่, ขอนแก่น"
+                          placeholder="เช่น เชียงใหม่, น่าน, เชียงราย, ขอนแก่น"
                         />
                       </div>
                       <div>
                         <label className="block text-[11px] font-label-caps text-secondary font-bold uppercase mb-1">
-                          แหล่งที่มา (พิมพ์เอง)
+                          แหล่งที่มาของข้อมูล (พิมพ์เอง)
                         </label>
                         <input
                           type="text"
                           className="w-full px-3 py-2 border border-outline-variant focus:border-primary rounded-lg text-sm bg-white outline-none"
                           value={source}
                           onChange={(e) => setSource(e.target.value)}
-                          placeholder="เช่น สำรวจภาคสนาม, อุทยานฯ"
+                          placeholder="เช่น สำรวจภาคสนาม, อุทยานแห่งชาติ, ONEP"
                         />
                       </div>
                     </div>

@@ -205,32 +205,19 @@ function CatalogContent() {
     return Array.from(new Set(THAI_REGIONS.flatMap(r => r.provinces)));
   }, [activeRegionObj]);
 
-  // Specimen counts per province (accurately matching multi-province strings)
+  // Specimen counts
   const provinceCounts = useMemo(() => {
-    const counts = {};
-    const allProvinces = THAI_REGIONS.flatMap(r => r.provinces);
-    
-    allProvinces.forEach(provName => {
-      const matchCount = allInsects.filter(ins => {
-        if (!ins.province) return false;
-        const cleanField = ins.province.replace(/จังหวัด/g, '');
-        return cleanField.includes(provName);
-      }).length;
-      counts[provName] = matchCount;
-    });
-    
-    return counts;
+    return allInsects.reduce((acc, ins) => {
+      if (ins.province) {
+        acc[ins.province] = (acc[ins.province] || 0) + 1;
+      }
+      return acc;
+    }, {});
   }, [allInsects]);
 
   const regionCounts = useMemo(() => {
     return THAI_REGIONS.reduce((acc, reg) => {
-      acc[reg.name] = allInsects.filter(ins => {
-        if (ins.region === reg.name || ins.region === reg.alias) return true;
-        if (ins.province) {
-          return reg.provinces.some(p => ins.province.includes(p));
-        }
-        return false;
-      }).length;
+      acc[reg.name] = allInsects.filter(ins => ins.region === reg.name || ins.region === reg.alias).length;
       return acc;
     }, {});
   }, [allInsects]);
