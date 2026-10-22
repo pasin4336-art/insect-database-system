@@ -457,17 +457,72 @@ function AdminDashboardContent() {
     }
   };
 
+  const compressImage = (file) => {
+    return new Promise((resolve) => {
+      if (!file.type.startsWith('image/')) {
+        return resolve(file);
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const maxDim = 1000;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
+                  type: 'image/jpeg',
+                  lastModified: Date.now()
+                });
+                resolve(compressedFile);
+              } else {
+                resolve(file);
+              }
+            },
+            'image/jpeg',
+            0.75
+          );
+        };
+        img.onerror = () => resolve(file);
+      };
+      reader.onerror = () => resolve(file);
+    });
+  };
+
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const rawFile = e.target.files[0];
+    if (!rawFile) return;
 
     setUploading(true);
-    setUploadProgress('กำลังอัปโหลดไฟล์รูปภาพ...');
-
-    const formData = new FormData();
-    formData.append('file', file);
+    setUploadProgress('กำลังปรับขนาดและบีบอัดรูปภาพให้เหมาะสม...');
 
     try {
+      const file = await compressImage(rawFile);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      setUploadProgress('กำลังอัปโหลดไฟล์รูปภาพ...');
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData
@@ -476,7 +531,7 @@ function AdminDashboardContent() {
 
       if (result.success) {
         setImageUrl(result.url);
-        setUploadProgress('อัปโหลดรูปภาพสำเร็จแล้ว! บันทึกไฟล์เรียบร้อย');
+        setUploadProgress('อัปโหลดรูปภาพสำเร็จแล้ว! (บีบอัดไฟล์ประหยัดพื้นที่เรียบร้อย)');
       } else {
         setUploadProgress(`อัปโหลดล้มเหลว: ${result.message}`);
       }
