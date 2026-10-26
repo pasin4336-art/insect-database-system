@@ -21,7 +21,14 @@ let pool;
 let isDbOnline = false;
 
 // Attempt to create MySQL pool if DB_HOST is configured and not default unconfigured localhost
-if (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost') {
+if (process.env.MYSQL_URI && process.env.MYSQL_URI.trim() !== '') {
+  try {
+    pool = mysql.createPool(process.env.MYSQL_URI);
+    isDbOnline = true;
+  } catch (error) {
+    console.warn("⚠️ MySQL URI pool creation failed. Falling back to mock data.", error.message);
+  }
+} else if (process.env.DB_HOST && process.env.DB_HOST !== '127.0.0.1' && process.env.DB_HOST !== 'localhost') {
   try {
     pool = mysql.createPool(config);
     isDbOnline = true;

@@ -14,9 +14,9 @@ services:
       - key: DB_PORT
         value: "4000"
       - key: DB_USER
-        sync: false
+        sync: false 
       - key: DB_PASSWORD
-        sync: false
+        sync: false 
       - key: DB_DATABASE
         value: insect_db
       - key: DB_SSL
