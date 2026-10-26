@@ -82,9 +82,20 @@ export async function GET(request) {
     }
 
     let query = `
-      SELECT i.*, c.name as category_name 
+      SELECT 
+        i.id, i.category_id, i.common_name, i.scientific_name, i.description,
+        i.habitat, i.status,
+        CASE 
+          WHEN i.image_url LIKE 'data:%' THEN CONCAT('/api/insects/', i.id, '/image')
+          ELSE i.image_url
+        END AS image_url,
+        i.created_at, i.updated_at,
+        i.kingdom, i.phylum, i.class_name, i.family, i.genus, i.species,
+        i.mouth_type, i.wing_type, i.leg_type, i.antenna_type,
+        i.region, i.province, i.source,
+        c.name as category_name 
       FROM insects i
-      JOIN categories c ON i.category_id = c.id
+      LEFT JOIN categories c ON i.category_id = c.id
       WHERE 1=1
     `;
     const queryParams = [];

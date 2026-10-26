@@ -43,6 +43,8 @@ export default function InsectImage({ src, alt, className = '', iconSize = 48 })
         style={{ transition: 'opacity 0.3s ease' }}
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         onError={() => setHasError(true)}
         onLoad={() => setLoaded(true)}
       />

@@ -100,18 +100,26 @@ function CatalogContent() {
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const [catRes, provRes, allInsRes] = await Promise.all([
-          fetch('/api/categories'),
-          fetch('/api/insects?get_provinces=true'),
-          fetch('/api/insects')
-        ]);
-        const catResult = await catRes.json();
-        const provResult = await provRes.json();
-        const allInsResult = await allInsRes.json();
+        fetch('/api/categories')
+          .then(res => res.json())
+          .then(catResult => {
+            if (catResult.success) setCategories(catResult.data);
+          })
+          .catch(err => console.error('Error fetching categories:', err));
 
-        if (catResult.success) setCategories(catResult.data);
-        if (provResult.success) setDbProvinces(provResult.data);
-        if (allInsResult.success) setAllInsects(allInsResult.data);
+        fetch('/api/insects?get_provinces=true')
+          .then(res => res.json())
+          .then(provResult => {
+            if (provResult.success) setDbProvinces(provResult.data);
+          })
+          .catch(err => console.error('Error fetching provinces:', err));
+
+        fetch('/api/insects')
+          .then(res => res.json())
+          .then(allInsResult => {
+            if (allInsResult.success) setAllInsects(allInsResult.data);
+          })
+          .catch(err => console.error('Error fetching all insects:', err));
       } catch (err) {
         console.error('Error fetching metadata:', err);
       }
