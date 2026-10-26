@@ -1,7 +1,7 @@
 services:
   - type: web
     name: insect-database-system
-    env: node
+    runtime: node
     plan: free
     region: singapore
     buildCommand: npm install && npm run build
@@ -10,11 +10,11 @@ services:
       - key: NODE_ENV
         value: production
       - key: DB_PORT
-        value: 4000
+        value: "4000"
       - key: DB_DATABASE
         value: insect_db
       - key: DB_SSL
-        value: true
+        value: "true"
       - key: JWT_SECRET
         generateValue: true
       - key: DB_HOST
