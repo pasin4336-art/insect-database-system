@@ -14,6 +14,7 @@ const config = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  connectTimeout: 8000,
   flags: '+FOUND_ROWS'
 };
 
@@ -52,9 +53,9 @@ const db = {
     if (isDbOnline && pool) {
       try {
         const [rows] = await pool.query(sql, params);
-        return [rows];
+        if (!Array.isArray(rows) || rows.length > 0 || params.length > 0) return [rows];
       } catch (err) {
-        if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT' || err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ER_ACCESS_DENIED_ERROR') {
+        if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT' || err.code === 'ENOTFOUND' || err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ER_ACCESS_DENIED_ERROR' || err.code === 'ER_BAD_DB_ERROR') {
           console.warn("⚠️ Database is unreachable. Falling back to Mock DB Engine.");
           isDbOnline = false;
         } else {
@@ -79,7 +80,7 @@ const db = {
     // ==========================================
     // CATEGORIES CRUD
     // ==========================================
-    if (cleanSql.toUpperCase().includes('CATEGORIES')) {
+    if (cleanSql.toUpperCase().includes('CATEGORIES') && !cleanSql.toUpperCase().includes('INSECTS')) {
       if (!mockDb.categories) mockDb.categories = [];
 
       // SELECT Categories

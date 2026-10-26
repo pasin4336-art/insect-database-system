@@ -45,11 +45,6 @@ let columnsChecked = false;
 // Publicly accessible
 export async function GET(request) {
   try {
-    if (!columnsChecked) {
-      await ensureTaxonomyColumns();
-      columnsChecked = true;
-    }
-
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || '';
     const categoryId = searchParams.get('category') || '';
