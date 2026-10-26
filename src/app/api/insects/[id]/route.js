@@ -8,9 +8,9 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
     const query = `
-      SELECT i.*, COALESCE(c.name, 'Coleoptera (ด้วง)') as category_name 
+      SELECT i.*, c.name as category_name 
       FROM insects i
-      LEFT JOIN categories c ON i.category_id = c.id
+      JOIN categories c ON i.category_id = c.id
       WHERE i.id = ?
       LIMIT 1
     `;
